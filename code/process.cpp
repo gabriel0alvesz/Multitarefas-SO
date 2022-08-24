@@ -9,7 +9,8 @@ void Files::ReadingFiles(){
      int colum = 1;
      string line, token;
      char del = ','; //arquivos .csv
-     map<string, vector<int> > m;
+     unordered_map<string, vector<int> > itens;
+     unordered_map<string, vector<int> > classes;
 
      ifstream process ("../input/D.csv");
 
@@ -22,24 +23,29 @@ void Files::ReadingFiles(){
           colum = 1;
           while (getline(sstream, token, del)){
 
-               if(colum < 5){token.append(" ").append(to_string(colum));}
+               if(colum < 5){
+                    
+                    token.append(" ").append(to_string(colum));
+                    itens[token].push_back(count);
                
-               m[token].push_back(count);
+               }else{classes[token].push_back(count);}
+                    
                colum++;
           }
 
           count++;
      }
 
-     PrintMap(m);
+     PrintMap(itens);
      cout << endl << endl;
+     PrintMap(classes);
 
      process.close();
 }
 
-void Files::PrintMap(map<string, vector<int> > m){
+void Files::PrintMap(unordered_map<string, vector<int> > m){
 
-     map<string, vector<int> >::iterator it;
+     unordered_map<string, vector<int> >::iterator it;
 
      for(it = m.begin(); it != m.end(); ++it){
 
