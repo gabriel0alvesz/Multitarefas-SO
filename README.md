@@ -24,10 +24,3 @@
 |  `make clean`          | Apaga a última compilação realizada contida na pasta build                                        |
 |  `make`                | Executa a compilação do programa utilizando o gcc, e o resultado vai para a pasta build           |
 |  `make run`            | Executa o programa da pasta build após a realização da compilação                                 |
-
- <h2>Exemplo</h2>
- 
-![h86o6-i253o](https://user-images.githubusercontent.com/103065659/186723600-464c5042-8d17-4a6c-8f4f-bd77b2ddb789.gif)
-
-
-
