@@ -11,10 +11,11 @@
 using namespace std;
     
     /**
-     * @brief Faz a leitura do arquivo D.csv - Realiza a etapa 1.
+     * @brief Faz a leitura do arquivo D.csv e T.csv - Realiza a etapa 1.
      */
     void ReadingFiles();
-
+    void FileReadingD(unordered_map< string, vector<int> > *itensD,  unordered_map< string, vector<int> > *classesD);
+    void FileReadindT(unordered_map< string, vector<int> > *itensT,  unordered_map< string, vector<int> > *classesT);
     /**
      * @brief Tokeniza linha a linha e separa em Hashs distintas
      * 
@@ -31,7 +32,6 @@ using namespace std;
      * @param map Hash a ser imprimida.
      */
     void PrintMap(unordered_map<string, vector<int> > map);
-        
 
 #endif
 

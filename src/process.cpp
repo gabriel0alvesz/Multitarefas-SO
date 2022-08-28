@@ -13,7 +13,7 @@ void Tokenizar(string line_token, unordered_map<string, vector<int> > *itens,uno
 
           if(count_column < 5){
                
-               token.append(" ").append(to_string(count_column));
+               token.append(",").append(to_string(count_column));
                (*itens)[token].push_back(count_line);
           
           }else{(*classes)[token].push_back(count_line);}
@@ -23,13 +23,11 @@ void Tokenizar(string line_token, unordered_map<string, vector<int> > *itens,uno
 
 }
 
-void ReadingFiles(){
+ void FileReadingD(unordered_map< string, vector<int> > *itensD,  unordered_map< string, vector<int> > *classesD){
 
      int count_line = 1;
-     string line, token;
+     string line;
      char del = ','; //arquivos .csv
-     unordered_map< string, vector<int> > itens;
-     unordered_map< string, vector<int> > classes;
 
      ifstream process("./src/input/D.csv");
 
@@ -39,20 +37,86 @@ void ReadingFiles(){
 
                getline(process,line);
 
-               Tokenizar(line,&itens,&classes,count_line);
+               Tokenizar(line,itensD,classesD,count_line);
                count_line++;     
           }
 
-          PrintMap(itens);
-          cout << endl << endl;
-          PrintMap(classes);
-
-     }else{
-
-          cout << "erro" << endl;
-     }
+     }else{cout << "erro" << endl;}
 
      process.close();
+}
+
+void FileReadingT(unordered_map<string, vector<int> > *itensT,  unordered_map<string, vector<int> > *classesT){
+
+     int count_line = 1;
+     string line;
+     char del = ','; //arquivos .csv
+
+     ifstream process("./src/input/T.csv");
+
+     if(process.is_open()){
+
+          while(!process.eof()){
+
+               getline(process,line);
+
+               Tokenizar(line,itensT,classesT,count_line);
+               count_line++;     
+          }
+
+     }else{cout << "erro" << endl;}
+
+     process.close();
+}
+
+void ReadingFiles(){
+
+     unordered_map<string, vector<int> > itensT;
+     unordered_map<string, vector<int> > classesT;
+     
+     unordered_map<string, vector<int> > itensD;
+     unordered_map<string, vector<int> > classesD;
+
+     /**
+      * A impressão dos arquivos tokenizados é no formato:
+      * [chave,coluna] - linhas em que essa chave aparece nesta coluna. 
+      */
+
+     FileReadingD(&itensD,&classesD);
+     FileReadingT(&itensT,&classesT);
+
+     cout << "\nArquivos foram lidos!\n";
+
+     int op = 1;
+
+     while(op != 0){
+
+          cout << "\nQual arquivo deseja imprimir?\n" << "[0] - EXIT!\t[1] - D.csv\t[2] - T.csv\n" << ">>>> ";
+          cin >> op;
+
+          switch (op){
+               
+               case 0:
+                    cout << "\nEnd of program\n\n";
+               break;
+
+               case 1:
+                    cout << "\nArquivo D.csv\n";
+                    PrintMap(itensD);
+                    PrintMap(classesD);
+               break;
+
+               case 2:
+                    cout << "\nArquivo T.csv\n";
+                    PrintMap(itensT);
+                    PrintMap(classesT);
+               break;
+
+               default:
+                    cout << "opção invalida!" << endl;
+               break;
+          }
+     }
 }
 
 void PrintMap(unordered_map<string, vector<int> > map){
