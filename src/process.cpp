@@ -1,6 +1,6 @@
 #include "process.hpp"
 
-void Tokenizar(string line_token, unordered_map<string, vector<int> > *itens,unordered_map<string, vector<int> > *classes, int count_line){
+void TokenizarInColumn(string line_token, unordered_map<string, vector<int> > *itens,unordered_map<string, vector<int> > *classes, int count_line){
 
      int count_column = 1;
      stringstream sstream(line_token);
@@ -20,7 +20,28 @@ void Tokenizar(string line_token, unordered_map<string, vector<int> > *itens,uno
                
           count_column++;
      }
+}
 
+void TokenizarInLine(string line_token, unordered_map<int, vector<string> > *itens,unordered_map<string, vector<int> > *classes, int count_line){
+
+     int count_column = 1;
+     stringstream sstream(line_token);
+     string token;
+     char del = ',';
+
+     unordered_map<string, vector<int> >::iterator it;
+
+     while (getline(sstream, token, del)){
+
+          if(count_column < 5){
+               
+               token.append(",").append(to_string(count_line));
+               (*itens)[count_line].push_back(token);
+          
+          }
+
+          count_column++;
+     }
 }
 
  void FileReadingD(unordered_map< string, vector<int> > *itensD,  unordered_map< string, vector<int> > *classesD){
@@ -37,7 +58,7 @@ void Tokenizar(string line_token, unordered_map<string, vector<int> > *itens,uno
 
                getline(process,line);
 
-               Tokenizar(line,itensD,classesD,count_line);
+               TokenizarInColumn(line,itensD,classesD,count_line);
                count_line++;     
           }
 
@@ -46,7 +67,7 @@ void Tokenizar(string line_token, unordered_map<string, vector<int> > *itens,uno
      process.close();
 }
 
-void FileReadingT(unordered_map<string, vector<int> > *itensT,  unordered_map<string, vector<int> > *classesT){
+void FileReadingT(unordered_map<int, vector<string> > *itensT,  unordered_map<string, vector<int> > *classesT){
 
      int count_line = 1;
      string line;
@@ -60,7 +81,7 @@ void FileReadingT(unordered_map<string, vector<int> > *itensT,  unordered_map<st
 
                getline(process,line);
 
-               Tokenizar(line,itensT,classesT,count_line);
+               TokenizarInLine(line,itensT,classesT,count_line);
                count_line++;     
           }
 
@@ -71,7 +92,7 @@ void FileReadingT(unordered_map<string, vector<int> > *itensT,  unordered_map<st
 
 void ReadingFiles(){
 
-     unordered_map<string, vector<int> > itensT;
+     unordered_map<int, vector<string> > itensT;
      unordered_map<string, vector<int> > classesT;
      
      unordered_map<string, vector<int> > itensD;
@@ -108,7 +129,7 @@ void ReadingFiles(){
 
                case 2:
                     cout << "\nArquivo T.csv\n";
-                    PrintMap(itensT);
+                    PrintMap1(itensT);
                     PrintMap(classesT);
                break;
 
@@ -127,9 +148,28 @@ void PrintMap(unordered_map<string, vector<int> > map){
      
      for(it = map.begin(); it != map.end(); ++it){
 
-          cout << it->first << " Linhas: ";
+          cout << it->first << " :: ";
 
           for(int n: it->second){
+
+               cout << n << " ";
+          }
+
+          cout << endl;
+     }
+}
+
+void PrintMap1(unordered_map<int, vector<string> > map){
+
+     unordered_map<int, vector<string> >::iterator it;
+
+     cout << endl << endl;
+     
+     for(it = map.begin(); it != map.end(); ++it){
+
+          cout << it->first << " :: ";
+
+          for(string n: it->second){
 
                cout << n << " ";
           }
