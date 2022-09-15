@@ -35,7 +35,7 @@ void TokenizarInLine(string line_token, unordered_map<int, vector<string> > *ite
 
           if(count_column < 5){
                
-               token.append(",").append(to_string(count_line));
+               token.append(",").append(to_string(count_column));
                (*itens)[count_line].push_back(token);
           
           }
