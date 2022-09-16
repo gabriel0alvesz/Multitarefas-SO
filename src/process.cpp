@@ -142,6 +142,8 @@ void ReadingFiles(){
      //procurando se existe determiand valor na chave de D
      int cont_aux = 0;
      unordered_map<int, vector<string> > :: iterator it;
+
+     unordered_map<int, vector<string> > new_itens;
      
      cout << "Quais valores de T estão presentes como chave de D?" << endl << endl;
      for(it = itensT.begin(); it != itensT.end(); ++it){
@@ -151,12 +153,15 @@ void ReadingFiles(){
                if(itensD.find(n) == itensD.end ()){
 
                     cout << "chave " << n << " encontrada!" << endl;
+                    new_itens[it->first].push_back(n);
                     cont_aux++;
                }
           }
      }
 
      cout << cont_aux << endl;
+
+     PrintMap1(new_itens);
 
 }
 
