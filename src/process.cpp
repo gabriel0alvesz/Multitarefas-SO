@@ -107,7 +107,7 @@ void ReadingFiles(){
      FileReadingT(&itensT,&classesT);
 
      cout << "\nArquivos foram lidos!\n";
-
+     
      int op = 1;
 
      while(op != 0){
@@ -138,6 +138,26 @@ void ReadingFiles(){
                break;
           }
      }
+     
+     //procurando se existe determiand valor na chave de D
+     int cont_aux = 0;
+     unordered_map<int, vector<string> > :: iterator it;
+     
+     cout << "Quais valores de T estão presentes como chave de D?" << endl << endl;
+     for(it = itensT.begin(); it != itensT.end(); ++it){
+
+          for(string n: it->second){
+
+               if(itensD.find(n) == itensD.end ()){
+
+                    cout << "chave " << n << " encontrada!" << endl;
+                    cont_aux++;
+               }
+          }
+     }
+
+     cout << cont_aux << endl;
+
 }
 
 void PrintMap(unordered_map<string, vector<int> > map){

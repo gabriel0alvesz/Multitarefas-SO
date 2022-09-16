@@ -16,6 +16,7 @@ using namespace std;
 void ReadingFiles();
 void FileReadingD(unordered_map< string, vector<int> > *itensD,  unordered_map< string, vector<int> > *classesD);
 void FileReadindT(unordered_map< int, vector<string> > *itensT,  unordered_map< string, vector<int> > *classesT);
+int Menu();
 /**
  * @brief Tokeniza linha a linha e separa em Hashs distintas
  * 
@@ -34,6 +35,9 @@ void TokenizarInLine(string line_token, unordered_map<int, vector<string> > *ite
  */
 void PrintMap(unordered_map<string, vector<int> > map);
 void PrintMap1(unordered_map<int, vector<string> > map);
+
+// Para fazer o processamento basta verificar os valor de T com as chaves em D, as que estiverem nas chaves de D iram para um novo map
+// as permutacoes será para criar conjuntos e subconjutos dos elementos do novo map que estiverem.
 
 #endif
 
