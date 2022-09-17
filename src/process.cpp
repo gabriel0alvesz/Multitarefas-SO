@@ -108,8 +108,8 @@ void ReadingFiles(){
 
      cout << "\nArquivos foram lidos!\n";
      
+     /*
      int op = 1;
-
      while(op != 0){
 
           cout << "\nQual arquivo deseja imprimir?\n" << "[0] - EXIT!\t[1] - D.csv\t[2] - T.csv\n" << ">>>> ";
@@ -138,21 +138,20 @@ void ReadingFiles(){
                break;
           }
      }
-     
-     //procurando se existe determiand valor na chave de D
+     */
+
+     //procurando se existe determiando valor na chave de D
      int cont_aux = 0;
      unordered_map<int, vector<string> > :: iterator it;
-
      unordered_map<int, vector<string> > new_itens;
      
-     cout << "Quais valores de T estão presentes como chave de D?" << endl << endl;
      for(it = itensT.begin(); it != itensT.end(); ++it){
 
           for(string n: it->second){
 
-               if(itensD.find(n) == itensD.end ()){
+               if(itensD.find(n) != itensD.end()){
 
-                    cout << "chave " << n << " encontrada!" << endl;
+                    //cout << "chave " << n << " encontrada!" << endl;
                     new_itens[it->first].push_back(n);
                     cont_aux++;
                }
@@ -160,9 +159,35 @@ void ReadingFiles(){
      }
 
      cout << cont_aux << endl;
-
      PrintMap1(new_itens);
 
+     cout << endl << endl;
+
+
+     // Fazendo as permutacoes do Novo Map
+     unordered_map<int, vector<string> > newItensPerm;
+     vector<string>::iterator itr;
+
+     for(it = new_itens.begin(); it != new_itens.end(); ++it){
+
+          sort((*it).second.begin(), (*it).second.end());
+          
+          itr = (*it).second.begin();
+
+          cout<< it->first << " :: ";
+
+          do{
+
+               //newItensPerm[it->first].push_back();
+               cout << (*itr) << " ";
+
+          }while(next_permutation(itr, (*it).second.end()));
+
+          cout << endl;
+     }
+
+     cout << endl;
+     PrintMap1(new_itens);
 }
 
 void PrintMap(unordered_map<string, vector<int> > map){
