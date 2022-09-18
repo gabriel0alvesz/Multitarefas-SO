@@ -170,24 +170,29 @@ void ReadingFiles(){
 
      for(it = new_itens.begin(); it != new_itens.end(); ++it){
 
-          sort((*it).second.begin(), (*it).second.end());
+          sort((*it).second.begin(), (*it).second.end()); // Qual o custo?
           
           itr = (*it).second.begin();
 
           cout<< it->first << " :: ";
 
-          do{
+         do{
 
-               //newItensPerm[it->first].push_back();
-               cout << (*itr) << " ";
-
+               if((*it).second.size() == 4){
+                    cout << *(itr+0) << " " << *(itr+1) << " " << *(itr+2) << " " << *(itr+3) << " # ";
+               }else if((*it).second.size() == 3){
+                    cout << *(itr+0) << " " << *(itr+1) << " " << *(itr+2) << " # ";
+               }else if((*it).second.size() == 2){
+                    cout << *(itr+0) << " " << *(itr+1) << " # ";
+               }
           }while(next_permutation(itr, (*it).second.end()));
-
-          cout << endl;
+          
+          cout << endl << endl;
+          
      }
 
      cout << endl;
-     PrintMap1(new_itens);
+     //PrintMap1(new_itens);
 }
 
 void PrintMap(unordered_map<string, vector<int> > map){
