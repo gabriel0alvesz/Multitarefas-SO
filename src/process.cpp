@@ -163,35 +163,106 @@ void ReadingFiles(){
 
      cout << endl << endl;
 
-
-     // Fazendo as permutacoes do Novo Map
-     unordered_map<int, vector<string> > newItensPerm;
-     vector<string>::iterator itr;
-
+     // Fazendo as permutacoes e armazenando em um novo Map
+     // Percorrendo cada vetor com estes interadores.
+     unordered_map<int, vector<vector<string> > > newItensPerm;
+     vector<string>::iterator itr, itrv, itrb;
+     
+     vector<string> vec_aux;
+     vector<vector<string> > vec_matrix;
+     
+     
+     //Acessa cada chave dos itens
      for(it = new_itens.begin(); it != new_itens.end(); ++it){
 
+          //Ordena cada vetor de cada chave
           sort((*it).second.begin(), (*it).second.end()); // Qual o custo?
+
+          //cout<< it->first << " :: ";
+
+          vec_matrix.clear();
+
+          for(itr = it->second.begin(); itr != it->second.end(); ++itr){
+               
+               vec_aux.clear();
+              vec_aux.push_back((*itr));
+              vec_matrix.push_back(vec_aux); 
+          }
           
-          itr = (*it).second.begin();
+     
+          for(itr = it->second.begin(); itr != it->second.end(); ++itr){
 
-          cout<< it->first << " :: ";
+               itrv = itr;
+               ++itrv;
+               vec_aux.clear();
+               for(; itrv != it->second.end(); ++ itrv){
 
-         do{
+                    vec_aux.push_back(*itr);
+                    vec_aux.push_back(*itrv);
+                    vec_matrix.push_back(vec_aux);
+               }
+          }
+
+          for(itr = it->second.begin(); itr != it->second.end(); ++itr){
+
+               itrv = itr;
+               ++itrv;
+               vec_aux.clear();
+
+               for(; itrv != it->second.end(); ++itrv){
+                    
+                    itrb = itrv;
+                    ++itrb;
+                    vec_aux.clear();
+
+                    for(; itrb != it->second.end(); ++itrb){
+
+                         vec_aux.push_back(*itr);
+                         vec_aux.push_back(*itrv);
+                         vec_aux.push_back(*itrb);
+                         vec_matrix.push_back(vec_aux);
+
+                    }
+               }
+          }
+
+          //newItensPerm.insert( { it->first, vec_matrix } );
+          newItensPerm[it->first] = vec_matrix;
+         /*do{
 
                if((*it).second.size() == 4){
                     cout << *(itr+0) << " " << *(itr+1) << " " << *(itr+2) << " " << *(itr+3) << " # ";
                }else if((*it).second.size() == 3){
                     cout << *(itr+0) << " " << *(itr+1) << " " << *(itr+2) << " # ";
                }else if((*it).second.size() == 2){
-                    cout << *(itr+0) << " " << *(itr+1) << " # ";
+                    cout << *(itr+0) << " " << *(itr+1) << " # d";
                }
           }while(next_permutation(itr, (*it).second.end()));
-          
-          cout << endl << endl;
+          */
+
+          //cout << endl << endl;
           
      }
+     unordered_map<int, vector<vector<string> > >::iterator it_map;
+     
+     for(it_map = newItensPerm.begin(); it_map != newItensPerm.end(); ++it_map){
 
-     cout << endl;
+          cout << it_map->first << " :: " << endl;;
+          
+          for(vector<string> n: it_map->second){
+
+               for(string a: n){
+
+                    cout << a << " ";
+               }
+               cout << endl;
+          }
+
+          cout << endl;
+     }
+
+
+     //cout << endl;
      //PrintMap1(new_itens);
 }
 
