@@ -244,6 +244,7 @@ void ReadingFiles(){
                break;
 
                case 1:
+                    
                     cout << "\nFazendo etapa 1:\n";
                     
                     FileReadingD(&itensD,&classesD);
@@ -262,7 +263,7 @@ void ReadingFiles(){
                     CheckKeyValues(&itensD,&itensT,&newItens);
                     PrintMap1(newItens);
 
-                    cout << "============= Permutações ============= ";
+                    cout << "\n============= Permutações ============= " << endl << endl;
     
                     Permutation(&newItens, &newItensPerm);
                     PrintPermutation(&newItensPerm);
