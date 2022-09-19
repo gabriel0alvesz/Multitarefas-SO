@@ -165,71 +165,6 @@ void Permutation(unordered_map<int, vector<string> > *newItens, unordered_map<in
      }
 }
 
-void ReadingFiles(){
-
-     unordered_map<int, vector<string> > itensT;
-     unordered_map<string, vector<int> > classesT;
-     
-     unordered_map<string, vector<int> > itensD;
-     unordered_map<string, vector<int> > classesD;
-
-     FileReadingD(&itensD,&classesD);
-     FileReadingT(&itensT,&classesT);
-
-     cout << "\nArquivos foram lidos!\n";
-     
-     /*
-     int op = 1;
-     while(op != 0){
-
-          cout << "\nQual arquivo deseja imprimir?\n" << "[0] - EXIT!\t[1] - D.csv\t[2] - T.csv\n" << ">>>> ";
-          cin >> op;
-
-          switch (op){
-               
-               case 0:
-                    cout << "\nEnd of program\n\n";
-               break;
-
-               case 1:
-                    cout << "\nArquivo D.csv\n";
-                    PrintMap(itensD);
-                    PrintMap(classesD);
-               break;
-
-               case 2:
-                    cout << "\nArquivo T.csv\n";
-                    PrintMap1(itensT);
-                    PrintMap(classesT);
-               break;
-
-               default:
-                    cout << "opção invalida!" << endl;
-               break;
-          }
-     }
-     */
-
-     //procurando se existe determiando valor na chave de D
-     
-     unordered_map<int, vector<string> > newItens;
-     
-     CheckKeyValues(&itensD,&itensT,&newItens);
-
-     PrintMap1(newItens);
-
-     cout << endl << endl;
-
-     // Fazendo as permutacoes e armazenando em um novo Map
-     // Percorrendo cada vetor com estes interadores.
-     unordered_map<int, vector<vector<string> > > newItensPerm;
-     
-     Permutation(&newItens, &newItensPerm);
-
-     PrintPermutation(&newItensPerm);
-     
-}
-
 void PrintMap(unordered_map<string, vector<int> > map){
 
      unordered_map<string, vector<int> >::iterator it;
@@ -285,4 +220,60 @@ void PrintPermutation(unordered_map<int, vector<vector<string> > > *newItensPerm
      }
 }
 
+void ReadingFiles(){
+
+     unordered_map<int, vector<string> > itensT;
+     unordered_map<string, vector<int> > classesT;
+     
+     unordered_map<string, vector<int> > itensD;
+     unordered_map<string, vector<int> > classesD;
+
+     unordered_map<int, vector<string> > newItens;
+     unordered_map<int, vector<vector<string> > > newItensPerm;
+
+     int op = 1;
+     while(op != 0){
+
+          cout << "\nQual arquivo deseja imprimir?\n" << "[0] - EXIT!\t[1] - Faz etapa 1\t[2] - Faz etapa 2\n" << ">>>> ";
+          cin >> op;
+
+          switch (op){
+               
+               case 0:
+                    cout << "\nEnd of program\n\n";
+               break;
+
+               case 1:
+                    cout << "\nFazendo etapa 1:\n";
+                    
+                    FileReadingD(&itensD,&classesD);
+                    PrintMap(itensD);
+                    PrintMap(classesD);
+                    
+                    FileReadingT(&itensT,&classesT);
+                    PrintMap1(itensT);
+                    PrintMap(classesT);
+                    cout << "\nArquivos foram lidos!\n";
+               break;
+
+               case 2:
+                    cout << "\nFazendo etapa 2:\n";
+
+                    CheckKeyValues(&itensD,&itensT,&newItens);
+                    PrintMap1(newItens);
+
+                    cout << "============= Permutações ============= ";
+    
+                    Permutation(&newItens, &newItensPerm);
+                    PrintPermutation(&newItensPerm);
+
+               break;
+
+               default:
+                    cout << "opção invalida!" << endl;
+               break;
+          }
+     }
+     
+}
 
