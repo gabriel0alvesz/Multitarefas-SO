@@ -234,7 +234,7 @@ void ReadingFiles(){
      int op = 1;
      while(op != 0){
 
-          cout << "\nQual arquivo deseja imprimir?\n" << "[0] - EXIT!\t[1] - Faz etapa 1\t[2] - Faz etapa 2\n" << ">>>> ";
+          cout << "\nFaça as etapas em ordem!\n" << "[0] - EXIT!\t[1] - Faz etapa 1\t[2] - Faz etapa 2\n" << ">>>> ";
           cin >> op;
 
           switch (op){
@@ -248,11 +248,15 @@ void ReadingFiles(){
                     cout << "\nFazendo etapa 1:\n";
                     
                     FileReadingD(&itensD,&classesD);
+                    cout << "\nItensD" << endl;
                     PrintMap(itensD);
+                    cout << "\nClassesD" << endl;
                     PrintMap(classesD);
                     
                     FileReadingT(&itensT,&classesT);
+                    cout << "\nItensT" << endl;
                     PrintMap1(itensT);
+                    cout << "\nClassesT" << endl;
                     PrintMap(classesT);
                     cout << "\nArquivos foram lidos!\n";
                break;
