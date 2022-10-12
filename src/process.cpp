@@ -107,7 +107,7 @@ void CheckKeyValues(unordered_map<string, vector<int> > *itensD, unordered_map< 
 void Permutation(unordered_map<int, vector<string> > *newItens, unordered_map<int, vector<vector<string> > > *newItensPerm){
 
      unordered_map<int, vector<string> > :: iterator it;
-     vector<string>::iterator itr, itrv, itrb;
+     vector<string>::iterator itr, itrv, itrb, itrc;
      
      vector<string> vec_aux;
      vector<vector<string> > vec_matrix;
@@ -118,6 +118,8 @@ void Permutation(unordered_map<int, vector<string> > *newItens, unordered_map<in
           sort((*it).second.begin(), (*it).second.end()); // Custo O(n log(n)) -> ordena cada vetor para facilitar a etapa 3.
 
           vec_matrix.clear();
+
+          // 1 a 1
           for(itr = it->second.begin(); itr != it->second.end(); ++itr){
                
                vec_aux.clear();
@@ -125,6 +127,7 @@ void Permutation(unordered_map<int, vector<string> > *newItens, unordered_map<in
                vec_matrix.push_back(vec_aux);
           }
 
+          //2 a 2
           for(itr = it->second.begin(); itr != it->second.end(); ++itr){
 
                itrv = itr;
@@ -138,6 +141,7 @@ void Permutation(unordered_map<int, vector<string> > *newItens, unordered_map<in
                }
           }
 
+          //3 a 3
           for(itr = it->second.begin(); itr != it->second.end(); ++itr){
 
                itrv = itr;
@@ -157,6 +161,37 @@ void Permutation(unordered_map<int, vector<string> > *newItens, unordered_map<in
                          vec_aux.push_back(*itrb);
                          vec_matrix.push_back(vec_aux);
 
+                    }
+               }
+          }
+
+          //4 a 4
+          for(itr = it->second.begin(); itr != it->second.end(); ++itr){
+
+               itrv = itr;
+               ++itrv;
+               vec_aux.clear();
+
+               for(; itrv != it->second.end(); ++itrv){
+                    
+                    itrb = itrv;
+                    ++itrb;
+                    vec_aux.clear();
+
+                    for(; itrb != it->second.end(); ++itrb){
+                         
+                         itrc = itrb;
+                         ++itrc;
+                         vec_aux.clear();
+
+                         for(; itrc != it->second.end(); ++itrc){
+
+                              vec_aux.push_back(*itr);
+                              vec_aux.push_back(*itrv);
+                              vec_aux.push_back(*itrb);
+                              vec_aux.push_back(*itrc);
+                              vec_matrix.push_back(vec_aux);
+                         }
                     }
                }
           }
@@ -281,4 +316,3 @@ void ReadingFiles(){
      }
      
 }
-
