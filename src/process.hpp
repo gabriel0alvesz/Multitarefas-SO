@@ -33,7 +33,7 @@ void CheckKeyValues(unordered_map<int, vector<string> > *itensD,unordered_map< i
  * @param itensT Endereço do Map (&itensT).
  * @param newItensPerm Endereço do Map quie armazenará as permutações (&newItensPerm).
  */
-void Permutation(unordered_map<int, vector<string> > *newItens, unordered_map<int, vector<vector<string> > > *newItensPerm);
+void Combination(unordered_map<int, vector<string> > *newItens, unordered_map<int, vector<vector<string> > > *newItensPerm);
 
 /**
  * @brief Tokeniza linha a linha e separa keys por coluna

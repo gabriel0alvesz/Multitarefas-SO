@@ -104,7 +104,7 @@ void CheckKeyValues(unordered_map<string, vector<int> > *itensD, unordered_map< 
 
 }
 
-void Permutation(unordered_map<int, vector<string> > *newItens, unordered_map<int, vector<vector<string> > > *newItensPerm){
+void Combination(unordered_map<int, vector<string> > *newItens, unordered_map<int, vector<vector<string> > > *newItensPerm){
 
      unordered_map<int, vector<string> > :: iterator it;
      vector<string>::iterator itr, itrv, itrb, itrc;
