@@ -8,6 +8,7 @@
 #include <vector>
 #include <unordered_map>
 #include <algorithm>
+#include <set>
 
 using namespace std;
 
@@ -69,6 +70,12 @@ void PrintMap1(unordered_map<int, vector<string> > map);
  * @param newItensPerm Endereço do Map de Permutações (&newItensPerm).
  */
 void PrintPermutation(unordered_map<int, vector<vector<string> > > *newItensPerm);
+
+void MakeIntersection(
+    unordered_map<string, vector<int> > *itensD,
+    unordered_map<int, vector<vector<string> > > *newItensPerm,
+    unordered_map<string, vector<int> > *classesD
+);
 
 
 #endif

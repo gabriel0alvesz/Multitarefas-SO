@@ -103,7 +103,33 @@ void CheckKeyValues(unordered_map<string, vector<int> > *itensD, unordered_map< 
      }
 
 }
+/*
+void CombinationRecursive(unordered_map<int, vector<string> > *newItens, unordered_map<int, vector<vector<string> > > *newItensPerm, vector<bool> vec_aux, int i){
 
+     unordered_map<int, vector<string> > :: iterator it = newItens->begin();
+     vector<string>::iterator itr = it->second;
+
+     if(!(i == (*itr).size())){
+
+          vec_aux[i] = true;
+          CombinationRecursive(newItens,newItensPerm,vec_aux, i + 1);
+          vec_aux[i] = false;
+          CombinationRecursive(newItens,newItensPerm,vec_aux, i + 1);
+     
+     }else{
+
+          for(int j = 0; j < (*itr).size(); j++){
+
+               if(vec_aux == 1){
+                    cout << (*itr);
+               }
+
+               cout << endl;
+          }
+     }
+
+}
+*/
 void Combination(unordered_map<int, vector<string> > *newItens, unordered_map<int, vector<vector<string> > > *newItensPerm){
 
      unordered_map<int, vector<string> > :: iterator it;
@@ -302,9 +328,9 @@ void ReadingFiles(){
                     CheckKeyValues(&itensD,&itensT,&newItens);
                     PrintMap1(newItens);
 
-                    cout << "\n============= Permutações ============= " << endl << endl;
-    
-                    Permutation(&newItens, &newItensPerm);
+                    cout << "\n============= Combinações ============= " << endl << endl;
+
+                    Combination(&newItens, &newItensPerm);
                     PrintPermutation(&newItensPerm);
 
                break;
@@ -314,5 +340,47 @@ void ReadingFiles(){
                break;
           }
      }
+
+     MakeIntersection(&itensD,&newItensPerm, &classesD);
      
 }
+
+void MakeIntersection(
+    unordered_map<string, vector<int> > *itensD,
+    unordered_map<int, vector<vector<string> > > *newItensPerm,
+    unordered_map<string, vector<int> > *classesD
+
+){
+
+     unordered_map<string, vector<int> >::iterator it, itb;
+     vector<int>::iterator itv;
+
+     unordered_map<int, vector<vector<string> > >::iterator itr;
+     
+     for(itr = newItensPerm->begin(); itr != newItensPerm->end(); ++itr){
+
+          for(vector<string> n: itr->second){
+
+               for(string str: n){
+                    
+                    vector<int> aux;
+                    if(n.size() == 1 && itensD->find(str) != itensD->end()){
+                         
+                         for(itb = classesD->begin(); itb != classesD->end(); ++itb){
+                              
+                              set_intersection(
+                                   (*itensD)[str].begin(),(*itensD)[str].end(),
+                                   itb->second.begin(),itb->second.end(),
+                                   back_inserter(aux)
+                              );
+     
+                              cout << str << "/" << itb->first << " = " << aux.size() << endl;
+                              aux.clear();
+                         }
+
+                         return;
+                    }
+               }
+          }
+     }
+}    
