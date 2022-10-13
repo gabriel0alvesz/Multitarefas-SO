@@ -71,6 +71,10 @@ void PrintMap1(unordered_map<int, vector<string> > map);
  */
 void PrintPermutation(unordered_map<int, vector<vector<string> > > *newItensPerm);
 
+void InitHashIntersection(
+    unordered_map<string, vector<int> > *classesD,
+    unordered_map<string, vector<int> > *c_intersection
+);
 
 
 
