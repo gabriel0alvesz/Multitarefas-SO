@@ -71,11 +71,23 @@ void PrintMap1(unordered_map<int, vector<string> > map);
  */
 void PrintPermutation(unordered_map<int, vector<vector<string> > > *newItensPerm);
 
+void PrintHashIntersection(unordered_map<string, int> *c_intersection);
+
 void InitHashIntersection(
     unordered_map<string, vector<int> > *classesD,
-    unordered_map<string, vector<int> > *c_intersection
+    unordered_map<string, int> *c_intersection
 );
 
+void VerifyMaxClass(
+    unordered_map<string, int> *c_aux,
+    unordered_map<string, int> *c_intersectio
+);
+
+void MakeIntersection(
+    unordered_map<int, vector<vector<string> > > *newItensPerm,
+    unordered_map< string, vector<int> > *itensD,
+    unordered_map< string, vector<int> > *classesD
+);
 
 
 #endif

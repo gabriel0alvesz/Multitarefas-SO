@@ -298,6 +298,76 @@ void InitHashIntersection(
 
 }
 
+void PrintHashIntersection(unordered_map<string, int> *c_intersection){
+
+     unordered_map<string, int >::iterator itv;
+
+     for(itv = c_intersection->begin(); itv != c_intersection->end(); ++itv){
+
+          cout << itv->first << " -> " << itv->second << endl;
+     } 
+}
+
+void VerifyMaxClass(
+    unordered_map<string, int> *c_aux,
+    unordered_map<string, int> *c_intersection
+){
+
+}
+
+void MakeIntersection(
+    unordered_map<int, vector<vector<string> > > *newItensPerm,
+    unordered_map< string, vector<int> > *itensD,
+    unordered_map< string, vector<int> > *classesD
+){
+
+     unordered_map<int, vector<vector<string> > >::iterator it;
+     unordered_map<string, vector<int> >::iterator itr;
+     unordered_map<string, int > class_aux, class_inter;
+
+     InitHashIntersection(classesD,&class_aux);
+     //InitHashIntersection(&classesD,&class_inter);
+     
+     vector<int> aux;
+     int i; // variavel auxiliar
+     
+     // Andando dentro da Hash de combinacoes
+     for(it = newItensPerm->begin(); it != newItensPerm->end(); ++it){
+
+          // Caminhando pela matriz
+          for(vector<string> vec: it->second){
+               
+              i = 0;
+               while(i < vec.size()){
+                   
+                    if(itensD->find(vec[i]) != itensD->end()){
+
+                         for(itr = classesD->begin(); itr != classesD->end(); ++itr){
+
+                              set_intersection(
+                                   (*itensD)[vec[i]].begin(),(*itensD)[vec[i]].end(),
+                                   itr->second.begin(), itr->second.end(),
+                                   back_inserter(aux)
+                              );
+
+                              class_aux[itr->first] += aux.size();
+                              aux.clear();
+                         }
+                    }
+                    
+                    //VerifyMaxClass(&class_aux,&class_inter);
+                    i++;
+               }
+          }
+     }
+     
+     cout << endl << endl;
+
+     PrintHashIntersection(&class_aux);
+
+}
+
+
 void ReadingFiles(){
 
      unordered_map<int, vector<string> > itensT;
@@ -312,7 +382,8 @@ void ReadingFiles(){
      int op = 1;
      while(op != 0){
 
-          cout << "\nFaça as etapas em ordem!\n" << "[0] - EXIT!\t[1] - Faz etapa 1\t[2] - Faz etapa 2\n" << ">>>> ";
+          cout << "\nFaça as etapas em ordem!\n" << "[0] - EXIT!\t[1] - Faz etapa 1\t[2] - Faz etapa 2";
+          cout << "\t[3] - Faz etapa 3\n" << ">>>>>> ";
           cin >> op;
 
           switch (op){
@@ -352,57 +423,18 @@ void ReadingFiles(){
 
                break;
 
+               case 3:
+                    cout << "\nFazendo etapa 3:\n";
+                    MakeIntersection(&newItensPerm,&itensD,&classesD);
+
+               break;
+
                default:
                     cout << "opção invalida!" << endl;
                break;
           }
      }
 
-// -----------------------------------------------------------> Fazendo as interseçoes
-     unordered_map<int, vector<vector<string> > >::iterator it;
-     unordered_map<string, vector<int> >::iterator itr;
-     unordered_map<string, int > class_aux, class_inter;
 
-     InitHashIntersection(&classesD,&class_aux);
-     
-     vector<int> aux;
-
-     // Andando dentro da Hash de combinacoes
-     for(it = newItensPerm.begin(); it != newItensPerm.end(); ++it){
-
-          // Linhas 357 e 359 caminha na matriz
-          for(vector<string> vec: it->second){
-
-               for(string str: vec){
-
-                    if(itensD.find(str) != itensD.end()){
-                         
-                         aux.clear();
-                         for(itr = classesD.begin(); itr != classesD.end(); ++itr){
-
-                              set_intersection(
-                                   itensD[str].begin(),itensD[str].end(),
-                                   itr->second.begin(), itr->second.end(),
-                                   back_inserter(aux)
-                              );
-                              
-                              cout << itr->first << " = " << class_aux[itr->first] << endl; 
-                              class_aux[itr->first] += aux.size();
-                              aux.clear();
-                         }
-
-                    }
-               }
-          }
-     }
-     
-     cout << endl << endl;
-
-     unordered_map<string, int >::iterator itv;
-
-     for(itv = class_aux.begin(); itv != class_aux.end(); ++itv){
-
-          cout << itv->first << " -> " << itv->second << endl;
-     }
      
 }
