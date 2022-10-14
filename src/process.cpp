@@ -103,33 +103,7 @@ void CheckKeyValues(unordered_map<string, vector<int> > *itensD, unordered_map< 
      }
 
 }
-/*
-void CombinationRecursive(unordered_map<int, vector<string> > *newItens, unordered_map<int, vector<vector<string> > > *newItensPerm, vector<bool> vec_aux, int i){
 
-     unordered_map<int, vector<string> > :: iterator it = newItens->begin();
-     vector<string>::iterator itr = it->second;
-
-     if(!(i == (*itr).size())){
-
-          vec_aux[i] = true;
-          CombinationRecursive(newItens,newItensPerm,vec_aux, i + 1);
-          vec_aux[i] = false;
-          CombinationRecursive(newItens,newItensPerm,vec_aux, i + 1);
-     
-     }else{
-
-          for(int j = 0; j < (*itr).size(); j++){
-
-               if(vec_aux == 1){
-                    cout << (*itr);
-               }
-
-               cout << endl;
-          }
-     }
-
-}
-*/
 void Combination(unordered_map<int, vector<string> > *newItens, unordered_map<int, vector<vector<string> > > *newItensPerm){
 
      unordered_map<int, vector<string> > :: iterator it;
@@ -191,6 +165,7 @@ void Combination(unordered_map<int, vector<string> > *newItens, unordered_map<in
                }
           }
 
+          /*
           //4 a 4
           for(itr = it->second.begin(); itr != it->second.end(); ++itr){
 
@@ -221,6 +196,7 @@ void Combination(unordered_map<int, vector<string> > *newItens, unordered_map<in
                     }
                }
           }
+          */
 
           (*newItensPerm)[it->first] = vec_matrix;
      }
@@ -306,13 +282,6 @@ void PrintHashIntersection(unordered_map<string, int> *c_intersection){
 
           cout << itv->first << " -> " << itv->second << endl;
      } 
-}
-
-void VerifyMaxClass(
-    unordered_map<string, int> *c_aux,
-    unordered_map<string, int> *c_intersection
-){
-
 }
 
 void MakeIntersection(

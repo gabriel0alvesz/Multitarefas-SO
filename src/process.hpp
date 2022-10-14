@@ -16,8 +16,22 @@ using namespace std;
  * @brief Faz a leitura do arquivo D.csv e T.csv - Realiza a etapa 1.
  */
 void ReadingFiles();
+
+/**
+ * @brief Leitura do Arquivo D.csv.
+ * 
+ * @param itensD Endereço Hash de itensD (&itensD).
+ * @param classesD Endereço Hash de classesD (&classesD).
+ */
 void FileReadingD(unordered_map< string, vector<int> > *itensD,  unordered_map< string, vector<int> > *classesD);
-void FileReadindT(unordered_map< int, vector<string> > *itensT,  unordered_map< string, vector<int> > *classesT);
+
+/**
+ * @brief Faz Leitura do arquivo T.csv.
+ * 
+ * @param itensT Endereço Hash de itensT (&itensT).
+ * @param classesT Endereço Hash de classesT (&classesT).
+ */
+void FileReadingT(unordered_map< int, vector<string> > *itensT,  unordered_map< string, vector<int> > *classesT);
 int Menu();
 
 /**
@@ -71,18 +85,31 @@ void PrintMap1(unordered_map<int, vector<string> > map);
  */
 void PrintPermutation(unordered_map<int, vector<vector<string> > > *newItensPerm);
 
+/**
+ * @brief Imprime Map da Quantidade de Intersecções.
+ * 
+ * @param c_intersection Endereço Hash de Intersecções (&c_intersection).
+ */
 void PrintHashIntersection(unordered_map<string, int> *c_intersection);
 
+/**
+ * @brief Inicia os valores de cada key da Hash como Zero.
+ * 
+ * @param classesD Endereço da Hash de Classes do arquivo D.csv(&classesD).
+ * @param c_intersection Endereço da Hash de intesecções(&c_intersection).
+ */
 void InitHashIntersection(
     unordered_map<string, vector<int> > *classesD,
     unordered_map<string, int> *c_intersection
 );
 
-void VerifyMaxClass(
-    unordered_map<string, int> *c_aux,
-    unordered_map<string, int> *c_intersectio
-);
-
+/**
+ * @brief Faz a intersecção das linhas
+ * 
+ * @param newItensPerm Endereço do Map de Permutações (&newItensPerm).
+ * @param itensD Endereço Hash de itens do arquivo D.csv (&itensD).
+ * @param classesD Endereço Hash de classes do arquivo D.csv (&classesD).
+ */
 void MakeIntersection(
     unordered_map<int, vector<vector<string> > > *newItensPerm,
     unordered_map< string, vector<int> > *itensD,
