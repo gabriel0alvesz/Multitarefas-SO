@@ -281,29 +281,72 @@ void PrintHashIntersection(unordered_map<string, int> *c_intersection){
      } 
 }
 
+void VerifyMaxClass(
+    unordered_map<string, int > *class_aux,
+    unordered_map<string, int > *class_inter
+){
+
+     unordered_map<string, int >::iterator itb;
+     string class_aux_str;
+     int tam = -1;
+     for(itb = class_aux->begin(); itb != class_aux->end(); ++itb){
+
+          if(itb->second > tam){
+
+               tam = itb->second;
+               class_aux_str.assign(itb->first);
+          }
+          
+     }
+
+     (*class_inter)[class_aux_str] += tam;
+}
+
+void IntersectionOnClass(
+    unordered_map<string, vector<int> > *classesD,
+    unordered_map<string, int > *class_aux,
+    vector<int> vec_result
+){
+     
+     unordered_map<string, vector<int> >::iterator itr;
+
+     for(itr = classesD->begin(); itr != classesD->end(); ++itr){
+
+               vector<int> aux;
+
+               set_intersection(
+                    vec_result.begin(),vec_result.end(),
+                    (*classesD)[itr->first].begin(),(*classesD)[itr->first].end(),
+                    back_inserter(aux)
+               );
+
+
+               (*class_aux)[itr->first] += aux.size();
+               
+     }
+}
+
 void MakeIntersection(
     unordered_map<int, vector<vector<string> > > *newItensPerm,
     unordered_map< string, vector<int> > *itensD,
-    unordered_map< string, vector<int> > *classesD
+    unordered_map< string, vector<int> > *classesD,
+    unordered_map<string, int > *class_inter
 ){
 
      unordered_map<int, vector<vector<string> > >::iterator it;
      unordered_map<string, vector<int> >::iterator itr;
-     unordered_map<string, int > class_aux, class_inter;
+     unordered_map<string, int > class_aux;
 
-     //InitHashIntersection(&classesD,&class_inter);
-     int i; // variavel auxiliar
-     
-     // Andando dentro da Hash de combinacoes
+     InitHashIntersection(classesD,class_inter);
+
+     //Caminha por cada KEY da Hash que armazena as combinações
      for(it = newItensPerm->begin(); it != newItensPerm->end(); ++it){
 
-          InitHashIntersection(classesD,&class_aux);
-          cout << endl << it->first << ": "<< endl;
-          
-          // Caminhando pela matriz
+          InitHashIntersection(classesD,&class_aux); // A cada loop, reseta a classe auxiliar.
+
           for(vector<string> vec: it->second){
                
-               vector<int> vec_result;
+               vector<int> vec_result;// a cada loop reseta o vetor.
                
                if(vec.size() == 1){
 
@@ -321,7 +364,7 @@ void MakeIntersection(
                     bool var_bool = false;
                     
                     for(string str: vec){
-
+                    
                          if(var_bool){
 
                               s2.assign(str);
@@ -334,7 +377,7 @@ void MakeIntersection(
                                    back_inserter(vec_result)
                               );
 
-                              vec1 = vec_result;
+                              vec1 = vec_result; 
 
                          }else{
                               
@@ -345,43 +388,15 @@ void MakeIntersection(
                     }
                }
 
-               for(itr = classesD->begin(); itr != classesD->end(); ++itr){
-
-                    vector<int> aux;
-
-                    set_intersection(
-                         vec_result.begin(),vec_result.end(),
-                         (*classesD)[itr->first].begin(),(*classesD)[itr->first].end(),
-                         back_inserter(aux)
-                    );
-
-
-                    class_aux[itr->first] += aux.size();
-                    
-               }
-               
+               IntersectionOnClass(classesD,&class_aux,vec_result);
           }
-
-          unordered_map<string, int >::iterator itb;
-          string class_aux_str;
-          int tam = -1;
-          for(itb = class_aux.begin(); itb != class_aux.end(); ++itb){
-
-               if(itb->second > tam){
-
-                    tam = itb->second;
-                    class_aux_str.assign(itb->first);
-               }
-               
-          }
-          cout << class_aux_str << endl;
+          
+          VerifyMaxClass(&class_aux,class_inter);
           PrintHashIntersection(&class_aux);
+          cout << endl;
      }
      
      cout << endl << endl;
-
-     //PrintHashIntersection(&class_aux);
-
 }
 
 
@@ -395,6 +410,8 @@ void ReadingFiles(){
 
      unordered_map<int, vector<string> > newItens;
      unordered_map<int, vector<vector<string> > > newItensPerm;
+
+     unordered_map<string, int > IntersectionClass;
 
      int op = 1;
      while(op != 0){
@@ -442,7 +459,10 @@ void ReadingFiles(){
 
                case 3:
                     cout << "\nFazendo etapa 3:\n";
-                    MakeIntersection(&newItensPerm,&itensD,&classesD);
+                    MakeIntersection(&newItensPerm,&itensD,&classesD,&IntersectionClass);
+                    
+                    cout << "Quantidade de intersecções referente as maiores classes: " << endl;
+                    PrintHashIntersection(&IntersectionClass);
 
                break;
 

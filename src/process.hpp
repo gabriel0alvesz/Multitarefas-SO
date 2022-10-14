@@ -113,9 +113,29 @@ void InitHashIntersection(
 void MakeIntersection(
     unordered_map<int, vector<vector<string> > > *newItensPerm,
     unordered_map< string, vector<int> > *itensD,
-    unordered_map< string, vector<int> > *classesD
+    unordered_map< string, vector<int> > *classesD,
+    unordered_map<string, int > *class_inter
 );
 
+/**
+ * @brief Faz a intersecção com as classes
+ * 
+ * @param classesD Endereço Hash de classes do arquivo D.csv (&classesD).
+ * @param class_aux Endereço da Hash auxiliar (&class_aux).
+ * @param vec_result Vetor resultade das intersecções de combinação (vec_result).
+ */
+void IntersectionOnClass(
+    unordered_map<string, vector<int> > *classesD,
+    unordered_map<string, int > *class_aux,
+    vector<int> vec_result
+);
+
+/**
+ * @brief Verifica qual a classe com mais intersecções.
+ * 
+ * @param class_aux Endereço da Hash auxiliar (&class_aux).
+ * @param class_inter Endereço da Hash principal de armazenamento (&class_inter).
+ */
 void VerifyMaxClass(
     unordered_map<string, int > *class_aux,
     unordered_map<string, int > *class_inter
