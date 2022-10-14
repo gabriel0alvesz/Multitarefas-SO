@@ -132,9 +132,9 @@ void Combination(unordered_map<int, vector<string> > *newItens, unordered_map<in
 
                itrv = itr;
                ++itrv;
-               vec_aux.clear();
                for(; itrv != it->second.end(); ++itrv){
-
+                    
+                    vec_aux.clear();
                     vec_aux.push_back(*itr);
                     vec_aux.push_back(*itrv);
                     vec_matrix.push_back(vec_aux);
@@ -146,16 +146,15 @@ void Combination(unordered_map<int, vector<string> > *newItens, unordered_map<in
 
                itrv = itr;
                ++itrv;
-               vec_aux.clear();
 
                for(; itrv != it->second.end(); ++itrv){
                     
                     itrb = itrv;
                     ++itrb;
-                    vec_aux.clear();
 
                     for(; itrb != it->second.end(); ++itrb){
 
+                         vec_aux.clear();
                          vec_aux.push_back(*itr);
                          vec_aux.push_back(*itrv);
                          vec_aux.push_back(*itrb);
@@ -165,28 +164,26 @@ void Combination(unordered_map<int, vector<string> > *newItens, unordered_map<in
                }
           }
 
-          /*
+          
           //4 a 4
           for(itr = it->second.begin(); itr != it->second.end(); ++itr){
 
                itrv = itr;
                ++itrv;
-               vec_aux.clear();
 
                for(; itrv != it->second.end(); ++itrv){
                     
                     itrb = itrv;
                     ++itrb;
-                    vec_aux.clear();
 
                     for(; itrb != it->second.end(); ++itrb){
                          
                          itrc = itrb;
                          ++itrc;
-                         vec_aux.clear();
 
                          for(; itrc != it->second.end(); ++itrc){
 
+                              vec_aux.clear();
                               vec_aux.push_back(*itr);
                               vec_aux.push_back(*itrv);
                               vec_aux.push_back(*itrb);
@@ -196,7 +193,7 @@ void Combination(unordered_map<int, vector<string> > *newItens, unordered_map<in
                     }
                }
           }
-          */
+          
 
           (*newItensPerm)[it->first] = vec_matrix;
      }
@@ -294,45 +291,96 @@ void MakeIntersection(
      unordered_map<string, vector<int> >::iterator itr;
      unordered_map<string, int > class_aux, class_inter;
 
-     InitHashIntersection(classesD,&class_aux);
      //InitHashIntersection(&classesD,&class_inter);
-     
-     vector<int> aux;
      int i; // variavel auxiliar
      
      // Andando dentro da Hash de combinacoes
      for(it = newItensPerm->begin(); it != newItensPerm->end(); ++it){
 
+          InitHashIntersection(classesD,&class_aux);
+          cout << endl << it->first << ": "<< endl;
+          
           // Caminhando pela matriz
           for(vector<string> vec: it->second){
                
-              i = 0;
-               while(i < vec.size()){
-                   
-                    if(itensD->find(vec[i]) != itensD->end()){
+               vector<int> vec_result;
+               
+               if(vec.size() == 1){
 
-                         for(itr = classesD->begin(); itr != classesD->end(); ++itr){
+                    itr = itensD->find(vec[0]);
+
+                    if(itr != itensD->end()){
+                    
+                         vec_result = itr->second;
+                    }
+
+               }else{
+
+                    string s1, s2;
+                    vector<int> vec1, vec2;
+                    bool var_bool = false;
+                    
+                    for(string str: vec){
+
+                         if(var_bool){
+
+                              s2.assign(str);
+                              vec2 = itensD->find(s2)->second;
+                              vec_result.clear();
 
                               set_intersection(
-                                   (*itensD)[vec[i]].begin(),(*itensD)[vec[i]].end(),
-                                   itr->second.begin(), itr->second.end(),
-                                   back_inserter(aux)
+                                   vec1.begin(), vec1.end(),
+                                   vec2.begin(),vec2.end(),
+                                   back_inserter(vec_result)
                               );
 
-                              class_aux[itr->first] += aux.size();
-                              aux.clear();
-                         }
+                              vec1 = vec_result;
+
+                         }else{
+                              
+                              var_bool = true;
+                              s1.assign(str);
+                              vec1 = itensD->find(s1)->second;
+                         } 
                     }
-                    
-                    //VerifyMaxClass(&class_aux,&class_inter);
-                    i++;
                }
+
+               for(itr = classesD->begin(); itr != classesD->end(); ++itr){
+
+                    vector<int> aux;
+
+                    set_intersection(
+                         vec_result.begin(),vec_result.end(),
+                         (*classesD)[itr->first].begin(),(*classesD)[itr->first].end(),
+                         back_inserter(aux)
+                    );
+
+
+                    class_aux[itr->first] += aux.size();
+                    
+               }
+               
           }
+
+          unordered_map<string, int >::iterator itb;
+          string class_aux_str;
+          int tam = -1;
+          for(itb = class_aux.begin(); itb != class_aux.end(); ++itb){
+
+               if(itb->second > tam){
+
+                    tam = itb->second;
+                    class_aux_str.assign(itb->first);
+               }
+               
+          }
+          cout << class_aux_str << endl;
+          PrintHashIntersection(&class_aux);
      }
      
      cout << endl << endl;
 
-     PrintHashIntersection(&class_aux);
+     //PrintHashIntersection(&class_aux);
 
 }
 

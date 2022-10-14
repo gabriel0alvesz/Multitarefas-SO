@@ -116,6 +116,11 @@ void MakeIntersection(
     unordered_map< string, vector<int> > *classesD
 );
 
+void VerifyMaxClass(
+    unordered_map<string, int > *class_aux,
+    unordered_map<string, int > *class_inter
+);
+
 
 #endif
 
