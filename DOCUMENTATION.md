@@ -1,3 +1,4 @@
+<div align="justify">
 <h1 align = "center">Etapas do trabalho</h1>
 
 ## Etapa 1:
@@ -53,7 +54,7 @@ Abaixo a uma demonstração de como foi realizado a tokenização e armazenament
 
 <p align="justify">
   A etapa 2 consiste em fazer a checagem e salvar todos os valores de <code>itensT</code> que estão presentes como keys em <code>itensD</code>, cada valor encontrado é armazenado em uma nova Hash, chamada de <code>newItens</code>. A função <code>CheckKeyValues</code> é a responsável por fazer a checagem e o armazenamento.<br>
- Após, a checagem e o armazenamento, será feita a combinação de valores presentes na Hash. Combinação sem repetição, feita 1 a 1, depois 2 a 2 e assim sucessivamente até o fim do vetor de valores de cada key. A Figura 3 mostra a impressão de <code>newItens</code> e a Figura 4 mostra a impressão de todas as combinações do vetor de valores da key = 30.
+ Após, a checagem e o armazenamento, será feita a combinação de valores presentes na Hash. Combinação sem repetição, feita 1 a 1, depois 2 a 2 e assim sucessivamente até o fim do vetor de valores de cada key - armazenando em uma nova Hash de nome <code>newItensPerm</code> A Figura 3 mostra a impressão de <code>newItens</code> e a Figura 4 mostra a impressão de todas as combinações do vetor de valores da key = 30.
   
   <img src="./assets/CheckItens.png"><br> Figura 3</img>
   
@@ -61,3 +62,16 @@ Abaixo a uma demonstração de como foi realizado a tokenização e armazenament
   
   <img src="./assets/exemplo_combinacao.png"><br> Figura 4</img>
 </p>
+
+## Etapa 3:
+
+  Nesta etapa 3, é realizado a verificação de cada elemento do vetor de string em cada chave do `Map` - <code>newItensPerm</code>. Essa verificação é feita com cada key do Map `itensD`. Após esta verificação, inicia-se o processo de intersecção de cada vetor de inteiros referentes as linhas congruentes com a key, em cada item de `newItensPerm`. A lógica que faz está verificação de cada string dentro de `newItensPerm` está implementada na função `MakeIntersection()`- Nela é possível fazer a intersecção com mais de um elemento do vetor de inteiros.
+Dentro de `MakeIntersection()`, após todo o fluxo de checagem e intersecção, tem-se um vetor *`vec_result`* e é por meio dele que é feito a intersecção com todas as classes. Estas intersecções são feitas pela função `IntersectionOnClass()`- Faz as intersecções e contabiliaza a quantidade de cada classe.
+Depois, após terem sido feita todas as intersecões referente a respectiva key congruente de `newItensPerm`, é feito a contabilização da classe com o maior número de intersecções e assim, é armazenada em um novo Map chamado `IntersectionClass`.
+> A cada string-valor pertencente ao `newItensPerm` é feito todo o processo de checagem, processamento e intersecção descrito a cima.
+
+Na Figura 5 abaixo, temos um exemplo de várias intersecções e o total das classes com maiores intersecções.
+
+![etapa3](./assets/etapa3.png "etapa3.png")
+Figura 5 - Etapa 3
+</div>
