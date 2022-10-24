@@ -320,7 +320,6 @@ void IntersectionOnClass(
                     back_inserter(aux)
                );
 
-
                (*class_aux)[itr->first] += aux.size();
                
      }
@@ -330,6 +329,7 @@ void MakeIntersection(
     unordered_map<int, vector<vector<string> > > *newItensPerm,
     unordered_map< string, vector<int> > *itensD,
     unordered_map< string, vector<int> > *classesD,
+    unordered_map<string, vector<int>> *cache,
     unordered_map<string, int > *class_inter
 ){
 
@@ -347,14 +347,18 @@ void MakeIntersection(
           for(vector<string> vec: it->second){
                
                vector<int> vec_result;// a cada loop reseta o vetor.
+               unordered_map<string, vector<int>>::iterator it_aux;
                
                if(vec.size() == 1){
 
                     itr = itensD->find(vec[0]);
 
                     if(itr != itensD->end()){
-                    
+                         
                          vec_result = itr->second;
+
+                         // Insere na cache
+                         cache->insert({vec[0],vec_result});
                     }
 
                }else{
@@ -363,27 +367,45 @@ void MakeIntersection(
                     vector<int> vec1, vec2;
                     bool var_bool = false;
                     
+                    string aux_cache = "";
+
                     for(string str: vec){
                     
                          if(var_bool){
 
+                              aux_cache.append(s1).append(" ");
                               s2.assign(str);
                               vec2 = itensD->find(s2)->second;
+                              
                               vec_result.clear();
+                              s1.clear();
+                              aux_cache.append(s2);
 
-                              set_intersection(
-                                   vec1.begin(), vec1.end(),
-                                   vec2.begin(),vec2.end(),
-                                   back_inserter(vec_result)
-                              );
+                              it_aux = cache->find(aux_cache);
+                              if(it_aux != cache->end()){
+
+                                   vec_result = (*cache)[aux_cache];
+                              
+                              }else{
+
+                                   set_intersection(
+                                        vec1.begin(), vec1.end(),
+                                        vec2.begin(),vec2.end(),
+                                        back_inserter(vec_result)
+                                   );
+
+                                   cache->insert({aux_cache,vec_result});
+                              }
 
                               vec1 = vec_result; 
+                              s1.assign(aux_cache);
 
                          }else{
                               
                               var_bool = true;
                               s1.assign(str);
                               vec1 = itensD->find(s1)->second;
+
                          } 
                     }
                }
@@ -412,6 +434,9 @@ void ReadingFiles(){
      unordered_map<int, vector<vector<string> > > newItensPerm;
 
      unordered_map<string, int > IntersectionClass;
+
+     unordered_map<string, vector<int>> Cache;
+
 
      int op = 1;
      while(op != 0){
@@ -459,7 +484,7 @@ void ReadingFiles(){
 
                case 3:
                     cout << "\nFazendo etapa 3:\n";
-                    MakeIntersection(&newItensPerm,&itensD,&classesD,&IntersectionClass);
+                    MakeIntersection(&newItensPerm,&itensD,&classesD,&Cache,&IntersectionClass);
                     
                     cout << "Quantidade de intersecções referente as maiores classes: " << endl;
                     PrintHashIntersection(&IntersectionClass);
@@ -471,7 +496,4 @@ void ReadingFiles(){
                break;
           }
      }
-
-
-     
 }

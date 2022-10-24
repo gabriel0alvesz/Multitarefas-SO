@@ -111,9 +111,10 @@ void InitHashIntersection(
  * @param classesD Endereço Hash de classes do arquivo D.csv (&classesD).
  */
 void MakeIntersection(
-    unordered_map<int, vector<vector<string> > > *newItensPerm,
-    unordered_map< string, vector<int> > *itensD,
-    unordered_map< string, vector<int> > *classesD,
+    unordered_map<int, vector<vector<string>>> *newItensPerm,
+    unordered_map< string, vector<int>> *itensD,
+    unordered_map<string, vector<int>> *classesD,
+    unordered_map<string, vector<int>> *cache,
     unordered_map<string, int > *class_inter
 );
 
