@@ -74,4 +74,14 @@ Na Figura 5 abaixo, temos um exemplo de várias intersecções e o total das cla
 
 ![etapa3](./assets/etapa3.png "etapa3.png")
 Figura 5 - Etapa 3
+
+## Etapa 4:
+
+A etapa 4 está dentro das implementações da etapa 3, mais precisamente dentro da função `MakeIntersection()`. Esta etapa consiste em simular uma memória *cache* por meio de uma **Hash** - unordered_map. Para cada nova ou futura intersecção que será feita, primeiro é verificado na "cache" se esta intersecão já foi realizada. Caso já tenha sido realizada, simplesmente é acessado o vetor de valores dessa intersecção salva como chave na hash de "cache" e assim este vetor de valores é passado para a função `IntersectionOnClass()`. Caso não esteja na "cache", é feita a intersecção conforme a etapa 3. Isso é feito para evitar processamento desnecessário Justamente o que um Sistema Operacional moderno deve fazer.
+
+Ainda nesta etapa, foram feitas melhorias no quesito de representatividade da quantidade de intersecções de cada classe e no quesito de contabilizar quantas vezes determinada classe foi a com maior número de intersecções. A figura 6  abaixo, mostra um exemplo ao rodar as etapas 3 e 4 - que são dependentes.
+
+![etapa4](./assets/figura6.png "figura6.png")
+
+Para verificar se realmente a classe com maior intersecões está conforme o arquivo `T.csv`, é imprimido a linha referente ao arquivo e a classe - entretando, essa congruência é feita sem acessar as **Hash's** referentes ao arquivo.
 </div>
