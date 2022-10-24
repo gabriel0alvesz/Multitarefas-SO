@@ -299,7 +299,8 @@ void VerifyMaxClass(
           
      }
 
-     (*class_inter)[class_aux_str] += tam;
+     cout << "Classe: " << class_aux_str << endl;
+     (*class_inter)[class_aux_str]++;
 }
 
 void IntersectionOnClass(
@@ -383,9 +384,9 @@ void MakeIntersection(
 
                               it_aux = cache->find(aux_cache);
                               if(it_aux != cache->end()){
-
+                                   
                                    vec_result = (*cache)[aux_cache];
-                              
+
                               }else{
 
                                    set_intersection(
@@ -413,11 +414,12 @@ void MakeIntersection(
                IntersectionOnClass(classesD,&class_aux,vec_result);
           }
           
+          cout << "Linha de T.csv => " << it->first << endl;
           VerifyMaxClass(&class_aux,class_inter);
           PrintHashIntersection(&class_aux);
           cout << endl;
      }
-     
+
      cout << endl << endl;
 }
 
@@ -442,7 +444,7 @@ void ReadingFiles(){
      while(op != 0){
 
           cout << "\nFaça as etapas em ordem!\n" << "[0] - EXIT!\t[1] - Faz etapa 1\t[2] - Faz etapa 2";
-          cout << "\t[3] - Faz etapa 3\n" << ">>>>>> ";
+          cout << "\t[34] - Faz etapa 3 e 4\n" << ">>>>>> ";
           cin >> op;
 
           switch (op){
@@ -482,11 +484,11 @@ void ReadingFiles(){
 
                break;
 
-               case 3:
-                    cout << "\nFazendo etapa 3:\n";
+               case 34:
+                    cout << "\nFazendo etapa 3 e 4:\n";
                     MakeIntersection(&newItensPerm,&itensD,&classesD,&Cache,&IntersectionClass);
                     
-                    cout << "Quantidade de intersecções referente as maiores classes: " << endl;
+                    cout << "Quantidade de vezes que determinada classe teve a maior quantidade de intersecções: " << endl;
                     PrintHashIntersection(&IntersectionClass);
 
                break;
