@@ -72,8 +72,7 @@ Depois, após terem sido feita todas as intersecões referente a respectiva key 
 
 Na Figura 5 abaixo, temos um exemplo de várias intersecções e o total das classes com maiores intersecções.
 
-![etapa3](./assets/etapa3.png "etapa3.png")
-Figura 5 - Etapa 3
+![etapa3](./assets/etapa3.png "etapa3.png")<br>Figura 5 - Etapa 3
 
 ## Etapa 4:
 
@@ -81,7 +80,7 @@ A etapa 4 está dentro das implementações da etapa 3, mais precisamente dentro
 
 Ainda nesta etapa, foram feitas melhorias no quesito de representatividade da quantidade de intersecções de cada classe e no quesito de contabilizar quantas vezes determinada classe foi a com maior número de intersecções. A figura 6  abaixo, mostra um exemplo ao rodar as etapas 3 e 4 - que são dependentes.
 
-![etapa4](./assets/figura6.png "figura6.png")
+![etapa4](./assets/figura6.png "figura6.png")<br>Figura 6 - Etapa 4.
 
 Para verificar se realmente a classe com maior intersecões está conforme o arquivo `T.csv`, é imprimido a linha referente ao arquivo e a classe - entretando, essa congruência é feita sem acessar as **Hash's** referentes ao arquivo.
 </div>
