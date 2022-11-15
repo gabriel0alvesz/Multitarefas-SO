@@ -334,8 +334,9 @@ void MakeIntersection(
     unordered_map<string, int > *class_inter
 ){
 
+     unordered_map<string, vector<int>> aux_vec;
      unordered_map<int, vector<vector<string> > >::iterator it;
-     unordered_map<string, vector<int> >::iterator itr;
+     unordered_map<string, vector<int> >::iterator itr, it_vecAux;
      unordered_map<string, int > class_aux;
 
      InitHashIntersection(classesD,class_inter);
@@ -345,11 +346,12 @@ void MakeIntersection(
 
           InitHashIntersection(classesD,&class_aux); // A cada loop, reseta a classe auxiliar.
 
+          
           for(vector<string> vec: it->second){
                
                vector<int> vec_result;// a cada loop reseta o vetor.
                unordered_map<string, vector<int>>::iterator it_aux;
-               
+
                if(vec.size() == 1){
 
                     itr = itensD->find(vec[0]);
@@ -381,7 +383,8 @@ void MakeIntersection(
                               vec_result.clear();
                               s1.clear();
                               aux_cache.append(s2);
-
+                              
+                              //Verifica na Cache se a combinaçãi ja esta presente
                               it_aux = cache->find(aux_cache);
                               if(it_aux != cache->end()){
                                    
@@ -413,6 +416,7 @@ void MakeIntersection(
 
                IntersectionOnClass(classesD,&class_aux,vec_result);
           }
+
           
           cout << "Linha de T.csv => " << it->first << endl;
           VerifyMaxClass(&class_aux,class_inter);
@@ -498,4 +502,274 @@ void ReadingFiles(){
                break;
           }
      }
+}
+
+
+// ------------------------ etapa 5 ------------------------
+
+void NewPolitics_SJF(HASH_int_MatrixString *newItensPerm, SUPER_DATAset *data_set){
+
+     vector<vector<string>> MatrixS_aux;
+     map<int, MATRIX_string> hash_tam;
+     unordered_map<int, map<int, MATRIX_string>> hash_linha;
+     map<int, vector<unordered_map<int, map<int, MATRIX_string>> > > superMap_aux;
+     vector<unordered_map<int, map<int, MATRIX_string>> > superVec_aux;
+
+     HASH_int_MatrixString::iterator it;
+     map<int, vector<unordered_map<int, map<int, MATRIX_string>> > >::iterator its;
+
+     for(it = newItensPerm->begin(); it != newItensPerm->end(); ++it){
+          
+
+          int tam_aux;
+          for(vector<string> n: it->second){
+               
+               tam_aux = n.size();
+
+               hash_tam.clear();
+               hash_linha.clear();
+               MatrixS_aux.clear();
+
+               MatrixS_aux.push_back(n);
+
+               hash_tam.insert({tam_aux,MatrixS_aux});
+               hash_linha.insert({it->first,hash_tam});
+
+               its = superMap_aux.find(tam_aux);
+               
+               if(its != superMap_aux.end()){
+
+                    its->second.push_back(hash_linha);
+               
+               }else{
+
+                    superVec_aux.clear();
+                    superVec_aux.push_back(hash_linha);
+                    superMap_aux.insert({tam_aux,superVec_aux});
+                    
+               }
+          }
+     }
+
+     for(its = superMap_aux.begin(); its != superMap_aux.end(); ++its){
+
+          cout << "index vec: " << its->first << endl;
+          for(auto vec: its->second){
+
+               data_set->push_back(vec);
+          }
+     }
+}
+
+void PrintSuperDataset(SUPER_DATAset *data){
+
+     for(auto vec: *data){
+
+          unordered_map<int, map<int, MATRIX_string>>::iterator itr;
+                    
+          for(itr = vec.begin(); itr != vec.end(); ++itr){
+
+               cout << "linha: " << itr->first;
+               map<int, MATRIX_string>::iterator itb;
+               for(itb = itr->second.begin(); itb != itr->second.end(); ++itb){
+
+                    cout << " tam: " << itb->first << endl;
+                    for(auto matrix: itb->second){
+
+                         for(auto vec_int: matrix){
+
+                              for(auto str: vec_int){
+
+                                   cout << str;
+                              }
+                              
+                              cout << " ";
+                         }
+
+                         cout << endl;
+                    }
+
+               }
+          }
+
+          cout << endl;
+     }
+}
+
+void MakeIntersection_SJF(
+    SUPER_DATAset *data,
+    unordered_map< string, vector<int>> *itensD,
+    unordered_map<string, vector<int>> *classesD,
+    unordered_map<string, vector<int>> *cache,
+    unordered_map<string, int > *class_inter
+){
+     unordered_map<string, int > class_aux;
+     unordered_map<string, vector<int>> vec_map_aux;
+
+     InitHashIntersection(classesD,class_inter);
+     
+     //Percorre a Super estrutura.
+     for(auto vec: *data){
+
+          InitHashIntersection(classesD,&class_aux);
+          
+          unordered_map<string, vector<int> >::iterator itt;
+          unordered_map<string, vector<int>>::iterator itv,itz;
+          unordered_map<int, map<int, MATRIX_string>>::iterator itr;
+
+          //Acessa hash de linhas
+          for(itr = vec.begin(); itr != vec.end(); ++itr){
+
+               // cout << "linha: " << itr->first;
+
+               //Acessando a hash de tamanhos de vetores nas matrizes
+               map<int, MATRIX_string>::iterator itb;
+               for(itb = itr->second.begin(); itb != itr->second.end(); ++itb){
+                    vector<int> vec_result;
+                    string aux_cache;
+                    // cout << " tam: " << itb->first << endl;
+                    for(vector<string> vec: itb->second){
+                         
+                         vec_result.clear();// a cada loop reseta o vetor.
+                         
+                         aux_cache.clear();// a cada loop reseta a string
+
+                         if(vec.size() == 1){
+
+                              itt = itensD->find(vec[0]);
+                              
+                              if(itt != itensD->end()){
+                                   
+                                   vec_result = itt->second;
+
+                                   cache->insert({vec[0], vec_result});
+                                   aux_cache = vec[0];
+                              }
+
+                         }else{
+
+                              string s1, s2;
+                              vector<int> vec1, vec2;
+                              bool var_bool = false;
+                              
+
+                              for(string str: vec){
+                              
+                                   if(var_bool){
+
+                                        aux_cache.append(s1).append(" ");
+                                        s2.assign(str);
+                                        vec2 = itensD->find(s2)->second;
+                                        
+                                        vec_result.clear();
+                                        s1.clear();
+                                        aux_cache.append(s2);
+                                        
+                                        //Verifica na Cache se a combinaçãi ja esta presente
+                                        itv = cache->find(aux_cache);
+                                        if(itv != cache->end()){
+                                             
+                                             vec_result = (*cache)[aux_cache];
+
+                                        }else{
+
+                                             set_intersection(
+                                                  vec1.begin(), vec1.end(),
+                                                  vec2.begin(),vec2.end(),
+                                                  back_inserter(vec_result)
+                                             );
+
+                                             cache->insert({aux_cache,vec_result});
+                                        }
+
+                                        vec1 = vec_result; 
+                                        s1.assign(aux_cache);
+
+                                   }else{
+                                        
+                                        var_bool = true;
+                                        s1.assign(str);
+                                        vec1 = itensD->find(s1)->second;
+
+                                   } 
+                              }
+                         }
+                         
+                    }
+
+          
+                    itz = vec_map_aux.find(aux_cache);
+
+                    if(itz != vec_map_aux.end()){
+                         
+                         cout << "encontrei!\n";
+                    
+                    }else{
+
+                         cout << "entrei no outro\n";
+                         vec_map_aux.insert({aux_cache,vec_result});
+                         IntersectionOnClass(classesD,&class_aux,vec_result);
+                         cout << "Linha de T.csv => " << itr->first << endl;
+                         VerifyMaxClass(&class_aux,class_inter);
+                         //PrintHashIntersection(&class_aux);
+                         cout << endl;
+                    
+                    }     
+                    
+               }
+          }
+
+          cout << endl;
+     }
+}
+
+void FunctionTest(){
+
+     unordered_map<int, vector<string> > itensT;
+     unordered_map<string, vector<int> > classesT;
+     
+     unordered_map<string, vector<int> > itensD;
+     unordered_map<string, vector<int> > classesD;
+
+     unordered_map<int, vector<string> > newItens;
+     unordered_map<int, vector<vector<string> > > newItensPerm;
+
+     unordered_map<string, vector<int>> cache;
+     unordered_map<string, int > class_inter;
+     SUPER_DATAset DATA;
+
+     //Etapa 1
+          FileReadingD(&itensD,&classesD);
+          cout << "\nItensD" << endl;
+          PrintMap(itensD);
+          cout << "\nClassesD" << endl;
+          PrintMap(classesD);
+          
+          FileReadingT(&itensT,&classesT);
+          cout << "\nItensT" << endl;
+          PrintMap1(itensT);
+          cout << "\nClassesT" << endl;
+          PrintMap(classesT);
+          cout << "\nArquivos foram lidos!\n";
+     
+     //Etapa 2
+          cout << "\nFazendo etapa 2:\n";
+
+          CheckKeyValues(&itensD,&itensT,&newItens);
+          PrintMap1(newItens);
+
+          cout << "\n============= Combinações ============= " << endl << endl;
+
+          Combination(&newItens, &newItensPerm);
+          //PrintPermutation(&newItensPerm);
+     
+     //Novo formato
+
+     NewPolitics_SJF(&newItensPerm,&DATA);
+
+     MakeIntersection_SJF(&DATA,&itensD,&classesD,&cache,&class_inter);
+     
+     PrintHashIntersection(&class_inter);
+     // PrintSuperDataset(&DATA);
+
 }

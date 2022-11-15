@@ -2,7 +2,9 @@
 
 int main(){
 
-    ReadingFiles();
+    // ReadingFiles();
+
+    FunctionTest();
 
     return 0;
 }

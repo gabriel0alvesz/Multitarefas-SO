@@ -4,7 +4,8 @@
         "iosfwd": "cpp",
         "iostream": "cpp",
         "ostream": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "map": "cpp"
     },
-    "C_Cpp.errorSquiggles": "Disabled"
+    "C_Cpp.errorSquiggles": "Enabled"
 }

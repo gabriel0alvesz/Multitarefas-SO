@@ -1,12 +1,17 @@
 #ifndef PROCESS_HPP
 #define PROCESS_HPP
 
+#define HASH_int_MatrixString unordered_map<int, vector<vector<string>>>
+#define MATRIX_string vector<vector<string>>
+#define SUPER_DATAset vector<unordered_map<int, map<int, MATRIX_string>> >
+
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <sstream>
 #include <vector>
 #include <unordered_map>
+#include <map>
 #include <algorithm>
 #include <set>
 
@@ -31,7 +36,7 @@ void FileReadingD(unordered_map< string, vector<int> > *itensD,  unordered_map< 
  * @param itensT Endereço Hash de itensT (&itensT).
  * @param classesT Endereço Hash de classesT (&classesT).
  */
-void FileReadingT(unordered_map< int, vector<string> > *itensT,  unordered_map< string, vector<int> > *classesT);
+void FileReadingT(unordered_map<int, vector<string> > *itensT,  unordered_map< string, vector<int> > *classesT);
 int Menu();
 
 /**
@@ -142,6 +147,16 @@ void VerifyMaxClass(
     unordered_map<string, int > *class_inter
 );
 
+void NewPolitics_SJF(HASH_int_MatrixString *newItensPerm, SUPER_DATAset *data_set);
+void PrintSuperDataset(SUPER_DATAset *data);
+void MakeIntersection_SJF(
+    SUPER_DATAset *data,
+    unordered_map< string, vector<int>> *itensD,
+    unordered_map<string, vector<int>> *classesD,
+    unordered_map<string, vector<int>> *cache,
+    unordered_map<string, int > *class_inter
+);
+void FunctionTest();
 
 #endif
 
