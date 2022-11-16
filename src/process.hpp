@@ -14,6 +14,7 @@
 #include <map>
 #include <algorithm>
 #include <set>
+#include <unistd.h>
 
 using namespace std;
 
@@ -147,8 +148,31 @@ void VerifyMaxClass(
     unordered_map<string, int > *class_inter
 );
 
+/**
+ * @brief Faz a nova estruturação dos dados 
+ *          no formato "Menor Job primeiro".
+ * 
+ * @param newItensPerm Endereço do Map de Combinações (&newItensPerm).
+ * @param data_set "Super" estrutura para armazenar o novo formato.
+ */
 void NewPolitics_SJF(HASH_int_MatrixString *newItensPerm, SUPER_DATAset *data_set);
+
+/**
+ * @brief Imprime a "Super" estrutura do Menor para o maior Job.
+ * 
+ * @param data Endereço da "Super" estrutura.
+ */
 void PrintSuperDataset(SUPER_DATAset *data);
+
+/**
+ * @brief Faz as Intersecções das linhas conforme a nova Política SJF
+ * 
+ * @param data Endereço da "Super" estrutura.
+ * @param itensD Endereço Hash de itens do arquivo D.csv (&itensD).
+ * @param classesD Endereço Hash de classes do arquivo D.csv (&classesD).
+ * @param cache Endereço da Hash de Cache Temporário.
+ * @param class_inter Endereço da Classe co ma quantidade de intersecções.
+ */
 void MakeIntersection_SJF(
     SUPER_DATAset *data,
     unordered_map< string, vector<int>> *itensD,
@@ -156,7 +180,11 @@ void MakeIntersection_SJF(
     unordered_map<string, vector<int>> *cache,
     unordered_map<string, int > *class_inter
 );
-void FunctionTest();
+
+/**
+ * @brief Faz A etapa 5 - Nova política.
+ */
+void MakeStage5();
 
 #endif
 

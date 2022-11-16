@@ -345,7 +345,6 @@ void MakeIntersection(
      for(it = newItensPerm->begin(); it != newItensPerm->end(); ++it){
 
           InitHashIntersection(classesD,&class_aux); // A cada loop, reseta a classe auxiliar.
-
           
           for(vector<string> vec: it->second){
                
@@ -603,37 +602,46 @@ void MakeIntersection_SJF(
     unordered_map<string, vector<int>> *cache,
     unordered_map<string, int > *class_inter
 ){
-     unordered_map<string, int > class_aux;
-     unordered_map<string, vector<int>> vec_map_aux;
+     unordered_map<int, unordered_map<string, int>> SuperMap_aux;
+     unordered_map<int, unordered_map<string, int>>::iterator itz;
+     
 
      InitHashIntersection(classesD,class_inter);
      
      //Percorre a Super estrutura.
      for(auto vec: *data){
 
-          InitHashIntersection(classesD,&class_aux);
           
           unordered_map<string, vector<int> >::iterator itt;
-          unordered_map<string, vector<int>>::iterator itv,itz;
+          unordered_map<string, vector<int>>::iterator itv;
           unordered_map<int, map<int, MATRIX_string>>::iterator itr;
 
           //Acessa hash de linhas
           for(itr = vec.begin(); itr != vec.end(); ++itr){
+
+               itz = SuperMap_aux.find(itr->first);
+
+               if(!(itz != SuperMap_aux.end())){
+
+                    unordered_map<string, int > class_aux;
+                    InitHashIntersection(classesD,&class_aux);
+                    SuperMap_aux.insert({itr->first,class_aux});
+               }
+
+               itz = SuperMap_aux.find(itr->first);
 
                // cout << "linha: " << itr->first;
 
                //Acessando a hash de tamanhos de vetores nas matrizes
                map<int, MATRIX_string>::iterator itb;
                for(itb = itr->second.begin(); itb != itr->second.end(); ++itb){
-                    vector<int> vec_result;
-                    string aux_cache;
+                    
+               
                     // cout << " tam: " << itb->first << endl;
                     for(vector<string> vec: itb->second){
                          
-                         vec_result.clear();// a cada loop reseta o vetor.
+                         vector<int> vec_result;
                          
-                         aux_cache.clear();// a cada loop reseta a string
-
                          if(vec.size() == 1){
 
                               itt = itensD->find(vec[0]);
@@ -643,7 +651,6 @@ void MakeIntersection_SJF(
                                    vec_result = itt->second;
 
                                    cache->insert({vec[0], vec_result});
-                                   aux_cache = vec[0];
                               }
 
                          }else{
@@ -652,6 +659,7 @@ void MakeIntersection_SJF(
                               vector<int> vec1, vec2;
                               bool var_bool = false;
                               
+                              string aux_cache = "";
 
                               for(string str: vec){
                               
@@ -693,37 +701,30 @@ void MakeIntersection_SJF(
 
                                    } 
                               }
+
                          }
-                         
-                    }
 
+                         
           
-                    itz = vec_map_aux.find(aux_cache);
-
-                    if(itz != vec_map_aux.end()){
-                         
-                         cout << "encontrei!\n";
-                    
-                    }else{
-
-                         cout << "entrei no outro\n";
-                         vec_map_aux.insert({aux_cache,vec_result});
-                         IntersectionOnClass(classesD,&class_aux,vec_result);
-                         cout << "Linha de T.csv => " << itr->first << endl;
-                         VerifyMaxClass(&class_aux,class_inter);
-                         //PrintHashIntersection(&class_aux);
-                         cout << endl;
-                    
-                    }     
-                    
+                         IntersectionOnClass(classesD,&itz->second,vec_result);
+                    }         
                }
           }
-
-          cout << endl;
      }
+
+     for(itz = SuperMap_aux.begin(); itz != SuperMap_aux.end(); ++itz){
+
+          cout << "Linha " << itz->first << endl;
+          VerifyMaxClass(&itz->second,class_inter);
+          PrintHashIntersection(&itz->second);
+          cout << endl;
+     
+     }
+     cout << endl;
+     
 }
 
-void FunctionTest(){
+void MakeStage5(){
 
      unordered_map<int, vector<string> > itensT;
      unordered_map<string, vector<int> > classesT;
@@ -740,36 +741,21 @@ void FunctionTest(){
 
      //Etapa 1
           FileReadingD(&itensD,&classesD);
-          cout << "\nItensD" << endl;
-          PrintMap(itensD);
-          cout << "\nClassesD" << endl;
-          PrintMap(classesD);
           
           FileReadingT(&itensT,&classesT);
-          cout << "\nItensT" << endl;
-          PrintMap1(itensT);
-          cout << "\nClassesT" << endl;
-          PrintMap(classesT);
-          cout << "\nArquivos foram lidos!\n";
-     
+          
      //Etapa 2
-          cout << "\nFazendo etapa 2:\n";
-
           CheckKeyValues(&itensD,&itensT,&newItens);
-          PrintMap1(newItens);
-
-          cout << "\n============= Combinações ============= " << endl << endl;
-
+          
           Combination(&newItens, &newItensPerm);
-          //PrintPermutation(&newItensPerm);
      
      //Novo formato
-
      NewPolitics_SJF(&newItensPerm,&DATA);
 
      MakeIntersection_SJF(&DATA,&itensD,&classesD,&cache,&class_inter);
-     
+     cache.clear();
+     cout << "---------------- TOTAL ------------------\n";
+
      PrintHashIntersection(&class_inter);
      // PrintSuperDataset(&DATA);
-
 }
