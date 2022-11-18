@@ -92,5 +92,7 @@ A "Super estrutura" criada é definada no arquivo de cabeçalho como **`SUPER_DA
 > O formato da "Super estrutura" é **`vector<unordered_map<int, map<int, MATRIX_string>> >`**
 
 A impressão desta nova estrutura fica no formato ***SFJ***. Conforme a figura 7 abaixo.
+
 ![Fig7](./assets/fig7_superData.png "fig7_superData.png")<br> Figura 7 - Etapa 5
+
 </div>
