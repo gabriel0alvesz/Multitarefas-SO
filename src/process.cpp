@@ -519,7 +519,7 @@ void NewPolitics_SJF(HASH_int_MatrixString *newItensPerm, SUPER_DATAset *data_se
 
      for(it = newItensPerm->begin(); it != newItensPerm->end(); ++it){
           
-
+               
           int tam_aux;
           for(vector<string> n: it->second){
                
@@ -559,6 +559,8 @@ void NewPolitics_SJF(HASH_int_MatrixString *newItensPerm, SUPER_DATAset *data_se
           }
      }
 }
+
+
 
 void PrintSuperDataset(SUPER_DATAset *data){
 
@@ -758,4 +760,223 @@ void MakeStage5(){
 
      PrintHashIntersection(&class_inter);
      // PrintSuperDataset(&DATA);
+}
+
+void MakeStage_aux(){
+
+     unordered_map<int, vector<string> > itensT;
+     unordered_map<string, vector<int> > classesT;
+     
+     unordered_map<string, vector<int> > itensD;
+     unordered_map<string, vector<int> > classesD;
+
+     unordered_map<int, vector<string> > newItens;
+     unordered_map<int, vector<vector<string> > > newItensPerm;
+
+     unordered_map<string, vector<int>> cache;
+     unordered_map<string, int > class_inter;
+     SUPER_DATAset DATA;
+
+     //Etapa 1
+          FileReadingD(&itensD,&classesD);
+          
+          FileReadingT(&itensT,&classesT);
+          
+     //Etapa 2
+          CheckKeyValues(&itensD,&itensT,&newItens);
+          
+          Combination(&newItens, &newItensPerm);
+     
+     // Proximas etapas
+     
+     NewPolitics_SJF(&newItensPerm,&DATA);
+
+     estrutura_global vglobal;
+     pthread_t cons[NUMCONS];
+     pthread_mutex_init(&vglobal.mutex_b, NULL);
+     pthread_mutex_init(&vglobal.mutex_c, NULL);
+
+     PreecheQueue(
+          &vglobal,
+          &DATA,
+          &itensD,
+          &classesD,
+          &cache,
+          &class_inter
+     );
+
+     for(int i=0; i<NUMCONS; i++)
+		pthread_create(&(cons[i]), NULL, consumidor, &vglobal);
+
+	for(int i=0; i<NUMCONS; i++)
+		pthread_join(cons[i], NULL);
+
+     unordered_map<int, unordered_map<string, int>>::iterator itz;
+     
+     for(itz = vglobal.SuperMap_aux.begin(); itz != vglobal.SuperMap_aux.end(); ++itz){
+
+          cout << "Linha " << itz->first << endl;
+          VerifyMaxClass(&itz->second,vglobal.class_inter);
+          PrintHashIntersection(&itz->second);
+          cout << endl;
+     
+     }
+     cout << endl;
+
+     PrintHashIntersection(&class_inter);
+};
+
+void *consumidor(void *arg){
+
+     estrutura_global *vglobal = (estrutura_global*)arg;
+
+     
+     unordered_map<int, unordered_map<string, int>>::iterator itz;
+     unordered_map<string, vector<int> >::iterator itt;
+     unordered_map<string, vector<int>>::iterator itv;
+     unordered_map<int, map<int, MATRIX_string>>::iterator itr;
+     
+     while(vglobal->fila_buffer.size() > 0){
+
+          cout << "loop\n";     
+          
+          if(!(vglobal->fila_buffer.empty())){
+
+               pthread_mutex_lock(&vglobal->mutex_b);
+               DATAset n = vglobal->fila_buffer.front();
+               vglobal->fila_buffer.pop();
+               pthread_mutex_unlock(&vglobal->mutex_b);
+               
+
+
+               pthread_mutex_lock(&vglobal->mutex_c);
+
+               //Acessa hash de linhas
+
+               for(itr = n.begin(); itr != n.end(); ++itr){
+                    
+                    itz = vglobal->SuperMap_aux.find(itr->first);
+                    
+
+                    if(!(itz != vglobal->SuperMap_aux.end())){
+
+                         unordered_map<string, int > class_aux;
+                         InitHashIntersection(vglobal->classesD,&class_aux);
+                         vglobal->SuperMap_aux.insert({itr->first,class_aux});
+                    
+                    }
+                    
+
+
+                    itz = vglobal->SuperMap_aux.find(itr->first);
+
+                    // cout << "linha: " << itr->first;
+
+                    //Acessando a hash de tamanhos de vetores nas matrizes
+                    map<int, MATRIX_string>::iterator itb;
+                    for(itb = itr->second.begin(); itb != itr->second.end(); ++itb){
+                         
+                    
+                         // cout << " tam: " << itb->first << endl;
+                         for(vector<string> vec: itb->second){
+                              
+                              vector<int> vec_result;
+                              
+                              if(vec.size() == 1){
+
+                                   itt = vglobal->itensD->find(vec[0]);
+                                   
+                                   if(itt != vglobal->itensD->end()){
+                                        
+                                        vec_result = itt->second;
+
+                                        vglobal->cache->insert({vec[0], vec_result});
+                                   }
+
+                              }else{
+
+                                   string s1, s2;
+                                   vector<int> vec1, vec2;
+                                   bool var_bool = false;
+                                   
+                                   string aux_cache = "";
+
+                                   for(string str: vec){
+                                   
+                                        if(var_bool){
+
+                                             aux_cache.append(s1).append(" ");
+                                             s2.assign(str);
+                                             vec2 = vglobal->itensD->find(s2)->second;
+                                             
+                                             vec_result.clear();
+                                             s1.clear();
+                                             aux_cache.append(s2);
+                                             
+                                             //Verifica na Cache se a combinaçãi ja esta presente
+                                             itv = vglobal->cache->find(aux_cache);
+                                             if(itv != vglobal->cache->end()){
+                                                  
+                                                  vec_result = itv->second;
+
+                                             }else{
+
+                                                  set_intersection(
+                                                       vec1.begin(), vec1.end(),
+                                                       vec2.begin(),vec2.end(),
+                                                       back_inserter(vec_result)
+                                                  );
+
+                                                  vglobal->cache->insert({aux_cache,vec_result});
+                                             }
+
+                                             vec1 = vec_result; 
+                                             s1.assign(aux_cache);
+
+                                        }else{
+                                             
+                                             var_bool = true;
+                                             s1.assign(str);
+                                             vec1 = vglobal->itensD->find(s1)->second;
+
+                                        } 
+                                   }
+
+                              } 
+               
+                              IntersectionOnClass(vglobal->classesD,&itz->second,vec_result);
+                         }         
+                    }
+               }
+
+               pthread_mutex_unlock(&vglobal->mutex_c);
+               
+          }
+     }
+
+     pthread_exit(arg);
+}
+
+void PreecheQueue(
+
+     estrutura_global *vglobal,
+     SUPER_DATAset *data_set,
+     unordered_map< string, vector<int>> *itensD,
+     unordered_map<string, vector<int>> *classesD,
+     unordered_map<string, vector<int>> *cache,
+     unordered_map<string, int > *class_inter
+){
+
+     vglobal->itensD = itensD;
+     vglobal->classesD = classesD;
+     vglobal->cache = cache;
+     vglobal->class_inter = class_inter;
+
+
+     SUPER_DATAset::iterator it;
+
+     for(it = data_set->begin(); it != data_set->end(); ++it){
+
+          vglobal->fila_buffer.push(*it);
+     }
 }

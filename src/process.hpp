@@ -4,6 +4,8 @@
 #define HASH_int_MatrixString unordered_map<int, vector<vector<string>>>
 #define MATRIX_string vector<vector<string>>
 #define SUPER_DATAset vector<unordered_map<int, map<int, MATRIX_string>> >
+#define NUMCONS 10
+#define DATAset unordered_map<int, map<int, MATRIX_string>>
 
 #include <iostream>
 #include <fstream>
@@ -15,6 +17,11 @@
 #include <algorithm>
 #include <set>
 #include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <iostream>
+#include <queue>
 
 using namespace std;
 
@@ -185,6 +192,41 @@ void MakeIntersection_SJF(
  * @brief Faz A etapa 5 - Nova política.
  */
 void MakeStage5();
+
+// ------------------------- Etapa 6
+
+void MakeStage_aux();
+
+typedef struct {
+
+    queue<DATAset> fila_buffer;
+
+    unordered_map< string, vector<int>> *itensD;
+    unordered_map<string, vector<int>> *classesD;
+    unordered_map<string, vector<int>> *cache;
+    unordered_map<string, int > *class_inter;
+    unordered_map<int, unordered_map<string, int>> SuperMap_aux;
+  	
+	pthread_mutex_t mutex_b;
+    pthread_mutex_t mutex_c;
+	
+
+}estrutura_global;
+
+void PreecheQueue(
+    
+    estrutura_global *vglobal,
+    SUPER_DATAset *data_set,
+    unordered_map< string, vector<int>> *itensD,
+    unordered_map<string, vector<int>> *classesD,
+    unordered_map<string, vector<int>> *cache,
+    unordered_map<string, int > *class_inter
+
+);
+
+void *consumidor(void *arg);
+
+
 
 #endif
 
