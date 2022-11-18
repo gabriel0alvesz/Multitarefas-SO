@@ -83,4 +83,7 @@ Ainda nesta etapa, foram feitas melhorias no quesito de representatividade da qu
 ![etapa4](./assets/figura6.png "figura6.png")<br>Figura 6 - Etapa 4.
 
 Para verificar se realmente a classe com maior intersecões está conforme o arquivo `T.csv`, é imprimido a linha referente ao arquivo e a classe - entretando, essa congruência é feita sem acessar as **Hash's** referentes ao arquivo.
+
+## Etapa 5
+A etapa 5 consiste em alterar a antiga política de escalonamento para realizar as interseccões que foi implementada na "Etapa 3". A nova política escolhida foi a ***"Menor Job Primeiro"*** - do inglês, ***Short First Job*** (SFJ). Para implementar o SFJ, optei por não fazer grandes alterações no código, ou seja, fiz apenas modificações mínimas nos métodos referentes as combinações e as intersecções.
 </div>
