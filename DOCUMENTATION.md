@@ -60,7 +60,7 @@ Abaixo a uma demonstração de como foi realizado a tokenização e armazenament
   
   É evidente que em <code>newItens</code> não são todas as chaves que possuem vetores com 4 elementos, isso significa q a checagem fez a seleção.<br>
   
-  <img src="./assets/exemplo_combinacao.png"><br> Figura 4</img>
+  <img id="fig4" src="./assets/exemplo_combinacao.png"><br> Figura 4</img>
 </p>
 
 ## Etapa 3:
@@ -85,5 +85,12 @@ Ainda nesta etapa, foram feitas melhorias no quesito de representatividade da qu
 Para verificar se realmente a classe com maior intersecões está conforme o arquivo `T.csv`, é imprimido a linha referente ao arquivo e a classe - entretando, essa congruência é feita sem acessar as **Hash's** referentes ao arquivo.
 
 ## Etapa 5
-A etapa 5 consiste em alterar a antiga política de escalonamento para realizar as interseccões que foi implementada na "Etapa 3". A nova política escolhida foi a ***"Menor Job Primeiro"*** - do inglês, ***Short First Job*** (SFJ). Para implementar o SFJ, optei por não fazer grandes alterações no código, ou seja, fiz apenas modificações mínimas nos métodos referentes as combinações e as intersecções.
+A etapa 5 consiste em alterar a antiga política de escalonamento para realizar as interseccões que foi implementada na "Etapa 3". A nova política escolhida foi a ***"Menor Job Primeiro"*** - do inglês, ***Short First Job*** (SFJ). Para implementar o SFJ, optei por não fazer grandes alterações no código, ou seja, fiz apenas modificações mínimas nos métodos referentes as combinações e as intersecções. Entretanto, fez-se necessário a criação de uma "Super estrutura" para que pegasse todas as combinaões armazenadas na Hash `newItensPerm` e as deixassem em formato ***SJF*** para então, fazer as intersecções com a ajuda da cache.
+
+A "Super estrutura" criada é definada no arquivo de cabeçalho como **`SUPER_DATAset`**. É constituída por um vetor, tendo em cada posição uma Hash do tipo `unordered_map`, cuja a KEY corresponde a linha - ou KEY de `newItensPerm` - e o valor é uma segunda Hash do tipo `map`. Nesta Hash mais interna, a KEY é referente ao tamanho dos vetores q estarão presentes na matriz de `strings` - no caso, o valor da hash mais interna é uma matriz. Para exemplificar melhor como funciona esta "Super estrutura" de armazenamento, teremos a [Figura 4](#fig4) como base. O método ***NewPolitics_SJF*** acessa cada linha da Hash`newItensPerm`, ao acessar a linha 30 como na Figura 4, esta linha é salva como valor da primeira Hash da "Super estrutura" e então é acessada cada combinação - que são vetores de string. Na Hash mais interna, o primeiro armzenamento será feito de todas as combinações com tamanho igual a 1, e etão será salvo no padrão {1 -> Matriz de vetores de tamanho 1}. E assim é feito sucessivamente para cada linha e cada tamanho de combinação presentes e em cada KEY da Hash `newItensPerm`.
+
+> O formato da "Super estrutura" é **`vector<unordered_map<int, map<int, MATRIX_string>> >`**
+
+A impressão desta nova estrutura fica no formato ***SFJ***. Conforme a figura 7 abaixo.
+![Fig7](./assets/fig7_superData.png "fig7_superData.png")<br> Figura 7 - Etapa 5
 </div>
