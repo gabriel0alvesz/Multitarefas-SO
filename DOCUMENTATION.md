@@ -85,7 +85,7 @@ Ainda nesta etapa, foram feitas melhorias no quesito de representatividade da qu
 Para verificar se realmente a classe com maior intersecões está conforme o arquivo `T.csv`, é imprimido a linha referente ao arquivo e a classe - entretando, essa congruência é feita sem acessar as **Hash's** referentes ao arquivo.
 
 ## Etapa 5
-A etapa 5 consiste em alterar a antiga política de escalonamento para realizar as interseccões que foi implementada na "Etapa 3". A nova política escolhida foi a ***"Menor Job Primeiro"*** - do inglês, ***Short First Job*** (SFJ). Para implementar o SFJ, optei por não fazer grandes alterações no código, ou seja, fiz apenas modificações mínimas nos métodos referentes as combinações e as intersecções. Entretanto, fez-se necessário a criação de uma "Super estrutura" para que pegasse todas as combinaões armazenadas na Hash `newItensPerm` e as deixassem em formato ***SJF*** para então, fazer as intersecções com a ajuda da cache.
+A etapa 5 consiste em alterar a antiga política de escalonamento para realizar as interseccões que foi implementada na "Etapa 3". A nova política escolhida foi a ***"Menor Job Primeiro"*** - do inglês, ***Shortest-Job-First*** (SFJ). Para implementar o SFJ, optei por não fazer grandes alterações no código, ou seja, fiz apenas modificações mínimas nos métodos referentes as combinações e as intersecções. Entretanto, fez-se necessário a criação de uma "Super estrutura" para que pegasse todas as combinaões armazenadas na Hash `newItensPerm` e as deixassem em formato ***SJF*** para então, fazer as intersecções com a ajuda da cache.
 
 A "Super estrutura" criada é definada no arquivo de cabeçalho como **`SUPER_DATAset`**. É constituída por um vetor, tendo em cada posição uma Hash do tipo `unordered_map`, cuja a KEY corresponde a linha - ou KEY de `newItensPerm` - e o valor é uma segunda Hash do tipo `map`. Nesta Hash mais interna, a KEY é referente ao tamanho dos vetores q estarão presentes na matriz de `strings` - no caso, o valor da hash mais interna é uma matriz. Para exemplificar melhor como funciona esta "Super estrutura" de armazenamento, teremos a [Figura 4](#fig4) como base. O método ***NewPolitics_SJF*** acessa cada linha da Hash`newItensPerm`, ao acessar a linha 30 como na Figura 4, esta linha é salva como valor da primeira Hash da "Super estrutura" e então é acessada cada combinação - que são vetores de string. Na Hash mais interna, o primeiro armzenamento será feito de todas as combinações com tamanho igual a 1, e etão será salvo no padrão {1 -> Matriz de vetores de tamanho 1}. E assim é feito sucessivamente para cada linha e cada tamanho de combinação presentes e em cada KEY da Hash `newItensPerm`.
 
@@ -94,5 +94,22 @@ A "Super estrutura" criada é definada no arquivo de cabeçalho como **`SUPER_DA
 A impressão desta nova estrutura fica no formato ***SFJ***. Conforme a figura 7 abaixo.
 
 ![Fig7](./assets/fig7_superData.png "fig7_superData.png")<br> Figura 7 - Etapa 5
+
+## Etapa 6
+
+A etapa 6 consiste em implementar ***THREADS***  onde as intersecões são realizadas. Para análise de paralelimo, foi observado duas políticas de escalonamento: **Round-Robin** e **Shortest-Job-First**(SFJ). Mas apenas foi aplicado paralelismo na política de **Menor JOB Primeiro**.
+
+
+A Figura 8 abaixo apresenta os tempos das duas políticas juntamente com a implementaão de Threads nas intesecões de SFJ.
+
+![times](./assets/times.png "times.png")
+
+> Conforme os resultados da Figura 8. Pode-se dizer que a forma como foi estruturada a política de SFJ tenha influenciado diretamente no seu tempo. Visto que,tanto sem, quanto aplicando Threads, tem-se que o tempo é maior para a política de **Menor JOB** em relação ao **Round-Robin**.
+
+### Conclusão
+
+A "Super estrutura" criada com o intuito de organizar as combinações para realizar as intersecções na política de Menor JOB, influenciou diretamente no tempo. A partir disso, pode-se concluir que a escolha de se utilizar matrizes de strings facilitou as etapas iniciais, uma vez que, não se fez necessário a tokenização para o processamento das etapas 3 e 4. Contudo, houve um alto custo de processamento para que estas matrizes fossem criadas e percorridas, para que então os processamentos secundários - como exemplo, fazer as intersecções - também fossem realizados na etapa 5 - para montar a "Super estrutura" e para percorrer a estrutura.
+
+> A pessíma decisão de projeto implicou no aumento do tempo de uma política que na teória conforme a referência, teria um menor tempo.
 
 </div>

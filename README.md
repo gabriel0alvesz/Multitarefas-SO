@@ -25,10 +25,7 @@
 |  `make`                | Executa a compilação do programa utilizando o gcc, e o resultado vai para a pasta build           |
 |  `make run`            | Executa o programa da pasta build após a realização da compilação                                 |
 
-## Menu
+## Referências
 
-Ao fazer a compilação será mostrado o seguinte menu de opções: 
-
-<img src="./assets/menu.png"></img>
-
+**TANENBAUM,** A. S. , ***Sistemas Operacionais Modernos.*** Quarta Edição, Editora Pearson, 2015
 
