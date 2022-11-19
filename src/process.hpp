@@ -195,9 +195,15 @@ void MakeStage5();
 
 // ------------------------- Etapa 6
 
+/**
+ * @brief Faz a etapa 6 - utilizando Threads
+ */
 void MakeStage_aux();
 
-typedef struct {
+/**
+ * @brief Struct da Thread
+ */
+typedef struct{
 
     queue<DATAset> fila_buffer;
 
@@ -213,6 +219,16 @@ typedef struct {
 
 }estrutura_global;
 
+/**
+ * @brief 
+ * 
+ * @param vglobal Endereço Struct da Thread (&vglobal).
+ * @param data_set Endereço da mega Estrutura (&data_set).
+ * @param itensD Endereço Hash de itens do arquivo D.csv (&itensD).
+ * @param classesD Endereço Hash de classes do arquivo D.csv (&classesD).
+ * @param cache Endereço da Hash de Cache Temporário (&cache).
+ * @param class_inter Endereço da Classe co ma quantidade de intersecções (&class_inter).
+ */
 void PreecheQueue(
     
     estrutura_global *vglobal,
@@ -224,9 +240,9 @@ void PreecheQueue(
 
 );
 
+/**
+ * @brief Consumidor da Thread referente a intersecção.
+ */
 void *consumidor(void *arg);
 
-
-
 #endif
-
