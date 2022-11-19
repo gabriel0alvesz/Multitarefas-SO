@@ -299,7 +299,7 @@ void VerifyMaxClass(
           
      }
 
-     cout << "Classe: " << class_aux_str << endl;
+     // cout << "Classe: " << class_aux_str << endl;
      (*class_inter)[class_aux_str]++;
 }
 
@@ -341,6 +341,7 @@ void MakeIntersection(
 
      InitHashIntersection(classesD,class_inter);
 
+     int qtd_cache = 0;
      //Caminha por cada KEY da Hash que armazena as combinações
      for(it = newItensPerm->begin(); it != newItensPerm->end(); ++it){
 
@@ -388,7 +389,7 @@ void MakeIntersection(
                               if(it_aux != cache->end()){
                                    
                                    vec_result = (*cache)[aux_cache];
-
+                                   qtd_cache++;
                               }else{
 
                                    set_intersection(
@@ -417,13 +418,15 @@ void MakeIntersection(
           }
 
           
-          cout << "Linha de T.csv => " << it->first << endl;
+          // cout << "Linha de T.csv => " << it->first << endl;
           VerifyMaxClass(&class_aux,class_inter);
-          PrintHashIntersection(&class_aux);
-          cout << endl;
+          // PrintHashIntersection(&class_aux);
+          // cout << endl;
      }
 
-     cout << endl << endl;
+     cout << "\nA política de ROUND-ROBIN acessou a cache: " << qtd_cache << "vezes\n";
+
+     // cout << endl << endl;
 }
 
 
@@ -442,65 +445,28 @@ void ReadingFiles(){
 
      unordered_map<string, vector<int>> Cache;
 
+     
+     FileReadingD(&itensD,&classesD);
+     
+     FileReadingT(&itensT,&classesT);
+     
+     CheckKeyValues(&itensD,&itensT,&newItens);
 
-     int op = 1;
-     while(op != 0){
+     Combination(&newItens, &newItensPerm);
+     // PrintPermutation(&newItensPerm);
+     
+     steady_clock::time_point start, end;
+     
+     start = steady_clock::now();
+     MakeIntersection(&newItensPerm,&itensD,&classesD,&Cache,&IntersectionClass);
+     end = steady_clock::now();
 
-          cout << "\nFaça as etapas em ordem!\n" << "[0] - EXIT!\t[1] - Faz etapa 1\t[2] - Faz etapa 2";
-          cout << "\t[34] - Faz etapa 3 e 4\n" << ">>>>>> ";
-          cin >> op;
+     auto time = duration_cast<duration<double>>(end-start);
 
-          switch (op){
-               
-               case 0:
-                    cout << "\nEnd of program\n\n";
-               break;
-
-               case 1:
-                    
-                    cout << "\nFazendo etapa 1:\n";
-                    
-                    FileReadingD(&itensD,&classesD);
-                    cout << "\nItensD" << endl;
-                    PrintMap(itensD);
-                    cout << "\nClassesD" << endl;
-                    PrintMap(classesD);
-                    
-                    FileReadingT(&itensT,&classesT);
-                    cout << "\nItensT" << endl;
-                    PrintMap1(itensT);
-                    cout << "\nClassesT" << endl;
-                    PrintMap(classesT);
-                    cout << "\nArquivos foram lidos!\n";
-               break;
-
-               case 2:
-                    cout << "\nFazendo etapa 2:\n";
-
-                    CheckKeyValues(&itensD,&itensT,&newItens);
-                    PrintMap1(newItens);
-
-                    cout << "\n============= Combinações ============= " << endl << endl;
-
-                    Combination(&newItens, &newItensPerm);
-                    PrintPermutation(&newItensPerm);
-
-               break;
-
-               case 34:
-                    cout << "\nFazendo etapa 3 e 4:\n";
-                    MakeIntersection(&newItensPerm,&itensD,&classesD,&Cache,&IntersectionClass);
-                    
-                    cout << "Quantidade de vezes que determinada classe teve a maior quantidade de intersecções: " << endl;
-                    PrintHashIntersection(&IntersectionClass);
-
-               break;
-
-               default:
-                    cout << "opção invalida!" << endl;
-               break;
-          }
-     }
+     cout << "\nROUND-ROBIN na intersecção levou: " << 
+     fixed << setprecision(9) << time.count() << " segundos\n\n";
+     
+     PrintHashIntersection(&IntersectionClass);
 }
 
 
@@ -552,7 +518,7 @@ void NewPolitics_SJF(HASH_int_MatrixString *newItensPerm, SUPER_DATAset *data_se
 
      for(its = superMap_aux.begin(); its != superMap_aux.end(); ++its){
 
-          cout << "index vec: " << its->first << endl;
+          // cout << "index vec: " << its->first << endl;
           for(auto vec: its->second){
 
                data_set->push_back(vec);
@@ -609,7 +575,7 @@ void MakeIntersection_SJF(
      
 
      InitHashIntersection(classesD,class_inter);
-     
+     int qtd_cache = 0;
      //Percorre a Super estrutura.
      for(auto vec: *data){
 
@@ -680,7 +646,7 @@ void MakeIntersection_SJF(
                                         if(itv != cache->end()){
                                              
                                              vec_result = (*cache)[aux_cache];
-
+                                             qtd_cache++;
                                         }else{
 
                                              set_intersection(
@@ -716,13 +682,15 @@ void MakeIntersection_SJF(
 
      for(itz = SuperMap_aux.begin(); itz != SuperMap_aux.end(); ++itz){
 
-          cout << "Linha " << itz->first << endl;
+          // cout << "Linha " << itz->first << endl;
           VerifyMaxClass(&itz->second,class_inter);
-          PrintHashIntersection(&itz->second);
-          cout << endl;
+          // PrintHashIntersection(&itz->second);
+          // cout << endl;
      
      }
-     cout << endl;
+     // cout << endl;
+
+     cout << "\nA política de SJF acessou a cache: " << qtd_cache << "vezes\n";
      
 }
 
@@ -754,9 +722,16 @@ void MakeStage5(){
      //Novo formato
      NewPolitics_SJF(&newItensPerm,&DATA);
 
+     steady_clock::time_point start, end;
+
+     start = steady_clock::now();
      MakeIntersection_SJF(&DATA,&itensD,&classesD,&cache,&class_inter);
-     cache.clear();
-     cout << "---------------- TOTAL ------------------\n";
+     end = steady_clock::now();
+
+     auto time = duration_cast<duration<double>>(end-start);
+
+     cout << "\nSFJ na intersecção levou: " << 
+     fixed << setprecision(9) << time.count() << " segundos\n\n";
 
      PrintHashIntersection(&class_inter);
      // PrintSuperDataset(&DATA);
@@ -796,6 +771,9 @@ void MakeStage_aux(){
      pthread_mutex_init(&vglobal.mutex_b, NULL);
      pthread_mutex_init(&vglobal.mutex_c, NULL);
 
+     steady_clock::time_point start, end;
+     
+     start = steady_clock::now();
      PreecheQueue(
           &vglobal,
           &DATA,
@@ -815,13 +793,19 @@ void MakeStage_aux(){
      
      for(itz = vglobal.SuperMap_aux.begin(); itz != vglobal.SuperMap_aux.end(); ++itz){
 
-          cout << "Linha " << itz->first << endl;
+          // cout << "Linha " << itz->first << endl;
           VerifyMaxClass(&itz->second,vglobal.class_inter);
-          PrintHashIntersection(&itz->second);
-          cout << endl;
+          // PrintHashIntersection(&itz->second);
+          // cout << endl;
      
      }
-     cout << endl;
+     end = steady_clock::now();
+
+      auto time = duration_cast<duration<double>>(end-start);
+
+     cout << "\nSFJ com " << NUMCONS << " THREADS na intersecção levou: " << 
+     fixed << setprecision(9) << time.count() << " segundos\n\n";
+     // cout << endl;
 
      PrintHashIntersection(&class_inter);
 };
@@ -830,15 +814,12 @@ void *consumidor(void *arg){
 
      estrutura_global *vglobal = (estrutura_global*)arg;
 
-     
      unordered_map<int, unordered_map<string, int>>::iterator itz;
      unordered_map<string, vector<int> >::iterator itt;
      unordered_map<string, vector<int>>::iterator itv;
      unordered_map<int, map<int, MATRIX_string>>::iterator itr;
      
      while(vglobal->fila_buffer.size() > 0){
-
-          cout << "loop\n";     
           
           if(!(vglobal->fila_buffer.empty())){
 

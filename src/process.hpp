@@ -4,26 +4,26 @@
 #define HASH_int_MatrixString unordered_map<int, vector<vector<string>>>
 #define MATRIX_string vector<vector<string>>
 #define SUPER_DATAset vector<unordered_map<int, map<int, MATRIX_string>> >
-#define NUMCONS 10
 #define DATAset unordered_map<int, map<int, MATRIX_string>>
+#define NUMCONS 10
 
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <sstream>
 #include <vector>
 #include <unordered_map>
 #include <map>
-#include <algorithm>
-#include <set>
 #include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <pthread.h>
-#include <iostream>
 #include <queue>
+#include <chrono>
+#include <ratio>
+#include <ctime>
+#include <algorithm>
+#include <iomanip>
 
 using namespace std;
+using namespace std::chrono;
 
 /**
  * @brief Faz a leitura do arquivo D.csv e T.csv - Realiza a etapa 1.

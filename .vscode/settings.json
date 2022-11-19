@@ -6,7 +6,8 @@
         "ostream": "cpp",
         "vector": "cpp",
         "map": "cpp",
-        "__hash_table": "cpp"
+        "__hash_table": "cpp",
+        "iomanip": "cpp"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }
