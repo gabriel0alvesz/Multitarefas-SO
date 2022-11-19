@@ -89,7 +89,7 @@ A etapa 5 consiste em alterar a antiga política de escalonamento para realizar 
 
 A "Super estrutura" criada é definada no arquivo de cabeçalho como **`SUPER_DATAset`**. É constituída por um vetor, tendo em cada posição uma Hash do tipo `unordered_map`, cuja a KEY corresponde a linha - ou KEY de `newItensPerm` - e o valor é uma segunda Hash do tipo `map`. Nesta Hash mais interna, a KEY é referente ao tamanho dos vetores q estarão presentes na matriz de `strings` - no caso, o valor da hash mais interna é uma matriz. Para exemplificar melhor como funciona esta "Super estrutura" de armazenamento, teremos a [Figura 4](#fig4) como base. O método ***NewPolitics_SJF*** acessa cada linha da Hash`newItensPerm`, ao acessar a linha 30 como na Figura 4, esta linha é salva como valor da primeira Hash da "Super estrutura" e então é acessada cada combinação - que são vetores de string. Na Hash mais interna, o primeiro armzenamento será feito de todas as combinações com tamanho igual a 1, e etão será salvo no padrão {1 -> Matriz de vetores de tamanho 1}. E assim é feito sucessivamente para cada linha e cada tamanho de combinação presentes e em cada KEY da Hash `newItensPerm`.
 
-> O formato da "Super estrutura" é **`vector<unordered_map<int, map<int, MATRIX_string>> >`**
+> O formato da "Super estrutura" é **`vector<unordered_map<int, map<int, vector<vector<string>> >>>`**
 
 A impressão desta nova estrutura fica no formato ***SFJ***. Conforme a figura 7 abaixo.
 
