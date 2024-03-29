@@ -31,6 +31,5 @@
 |  `make run`            | Executa o programa da pasta build após a realização da compilação                                 |
 
 ## Referências
-
 **TANENBAUM,** A. S. , ***Sistemas Operacionais Modernos.*** Quarta Edição, Editora Pearson, 2015
 
